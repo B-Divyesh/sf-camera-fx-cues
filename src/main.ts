@@ -40,6 +40,7 @@ function template(body: string, current: Mode) {
     <header class="site-header"><a class="wordmark" href="/" data-route aria-label="Camera FX Cues home"><span aria-hidden="true">▣</span> CAMERA FX CUES</a>
       <nav aria-label="Primary"><a href="/demo" data-route${current === 'demo' ? ' aria-current="page"' : ''}>Demo</a><a href="#how" ${current !== 'landing' ? 'hidden' : ''}>How it works</a><a href="/privacy" data-route${current === 'privacy' ? ' aria-current="page"' : ''}>Privacy</a></nav>
     </header>
+    <p id="offline-notice" class="offline-notice" hidden role="status">Offline. Reconnect before starting a camera.</p>
     <main id="main" tabindex="-1">${body}</main>
     <footer><p>Playful camera cues for small teams.</p><p><a href="/privacy" data-route>Privacy</a> <a href="/terms" data-route>Terms</a> <span>Built by Param Factory · v1.0.0</span></p></footer>
     <div id="route-status" class="sr-only" aria-live="polite"></div>`;
@@ -105,6 +106,7 @@ function render(next = routeForPath()) {
   if (h1) h1.tabIndex = -1;
   requestAnimationFrame(() => h1?.focus({ preventScroll: true }));
   bindCommon();
+  updateConnectivity();
   if (next === 'demo') startSample();
   if (next === 'live') startCamera();
 }
@@ -202,9 +204,12 @@ function savePreset(event: SubmitEvent) { event.preventDefault(); const form = e
 function resetDemo() { clearStoragePrefix('demo:camera-fx-cues:'); clearCue(); const feedback = document.querySelector('#preset-feedback'); if (feedback) feedback.textContent = 'Demo reset. No sample presets remain.'; renderPresets(); }
 function clearStoragePrefix(prefix: string) { Object.keys(localStorage).filter(key => key.startsWith(prefix)).forEach(key => localStorage.removeItem(key)); }
 function escapeHtml(value: string) { const div = document.createElement('div'); div.textContent = value; return div.innerHTML; }
+function updateConnectivity() { const notice = document.querySelector<HTMLElement>('#offline-notice'); if (!notice) return; notice.hidden = navigator.onLine; }
 
 window.addEventListener('keydown', event => { if (!['demo', 'live'].includes(mode) || event.metaKey || event.ctrlKey || event.altKey) return; const target = event.target as HTMLElement; if (target.matches('input, textarea')) return; if (event.key === 'Escape') { clearCue(); return; } const cue = cueList.find(c => c.key === event.key); if (cue) { event.preventDefault(); triggerCue(cue.id); } });
 window.addEventListener('popstate', () => render());
 window.addEventListener('beforeunload', stopCamera);
+window.addEventListener('online', updateConnectivity);
+window.addEventListener('offline', updateConnectivity);
 if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => undefined));
 render();

@@ -19,7 +19,7 @@ npm run build
 
 `npm test` passed: 7 Playwright tests, including all five claims in `.factory/claims.json`, keyboard controls, isolated preset storage, cross-origin request checks, mobile landmarks, and axe-core serious/critical checks.
 
-`npm run build` passed and writes `dist/index.html` at the static deploy root. Final shipped JavaScript is 6.54 KB gzip and CSS is 3.15 KB gzip.
+`npm run build` passed and writes `dist/index.html` at the static deploy root. Final shipped JavaScript is 6.62 KB gzip and CSS is 3.19 KB gzip.
 
 Lighthouse 12.6.0 on the production preview: Performance **100**, Accessibility **100**, FCP **0.92 s**, LCP **1.38 s**, CLS **0**. The check used Chromium with `--headless --no-sandbox --disable-dev-shm-usage --disable-gpu`.
 
