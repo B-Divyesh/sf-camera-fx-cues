@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://camera-fx-cues.sociobot.in/sitemap.xml

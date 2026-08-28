@@ -1,0 +1,8 @@
+{
+  "slug": "camera-fx-cues",
+  "title": "Camera FX Cues",
+  "artifact_class": "static-web",
+  "user": "Small game-jam and classroom teams who want playful webcam effects controlled by clear cues.",
+  "smallest_useful_product": "A local camera scene with laser, outline, pixel burst, freeze, zoom and shake cues, keyboard triggers, and a no-camera preview.",
+  "monetization": "free"
+}

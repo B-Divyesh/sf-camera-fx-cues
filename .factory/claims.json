@@ -1,0 +1,23 @@
+[
+  {
+    "id": "sample-cues",
+    "claim": "Try all six cues with the sample scene",
+    "where": "landing and demo cue grid",
+    "test": "npm test -- --grep @claim:sample-cues",
+    "sandbox": "fresh browser context at /demo; click every cue and assert each active status"
+  },
+  {
+    "id": "local-video",
+    "claim": "Camera video stays in this browser",
+    "where": "landing privacy fact and privacy page",
+    "test": "npm test -- --grep @claim:local-video",
+    "sandbox": "fresh browser context at /demo; intercept requests during the full demo flow and assert only same-origin requests"
+  },
+  {
+    "id": "preset-save",
+    "claim": "Save cue settings on this device",
+    "where": "preset controls",
+    "test": "npm test -- --grep @claim:preset-save",
+    "sandbox": "fresh browser context at /demo; save a named preset and assert it reappears after reload"
+  }
+]
