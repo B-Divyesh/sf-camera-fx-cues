@@ -1,4 +1,25 @@
-# Camera FX Cues verification handoff — PASS
+# Review 1 handoff — 2026-08-28
+
+An adversarial, read-only first-read review was completed against live `https://camera-fx-cues.sociobot.in` and commit `3de0f5e370a0e28126c61a0918a99815f5264298`. Product code was not modified.
+
+The result is **FAIL**. See `.factory/review-1.md` for the complete evidence, sentence-level copy audit, and reproduction detail. The blockers are: the 390 px demo does not show an active, realistic product use in its initial viewport; and the registered reduced-motion claim does not test the Shake half of its promise. Minor findings cover standalone 404 metadata/footer navigation and three copy consistency/readability repairs.
+
+Verification run from a fresh clone: `npm ci`; all nine registered claim commands individually; `npm test` (15/15); `npm run lint`; and `npm run build`. Live fresh-context checks confirmed the cold landing read, same-origin demo requests, demo storage isolation test coverage, controlled-service-worker offline `/demo` reload, route status codes, and internal-link crawl.
+
+To verify after repairs:
+
+```sh
+npm ci
+npm test
+npm run lint
+npm run build
+```
+
+Then repeat the live 390 × 844 `/demo` first-screen check and every command in `.factory/claims.json` from a fresh clone.
+
+---
+
+# Earlier Camera FX Cues verification handoff — PASS
 
 ## Independent verification 2 (2026-08-28)
 
