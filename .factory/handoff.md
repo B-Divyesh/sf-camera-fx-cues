@@ -1,34 +1,43 @@
-# Camera FX Cues handoff
+# Camera FX Cues independent verification handoff
 
-## Shipped
+## Result: FAIL
 
-- A Vite + vanilla TypeScript static web app with local camera consent, camera failure recovery, and a no-camera sample signal.
-- Six original browser effects: laser, outline, pixel burst, freeze, zoom, and shake. They work from the cue pads and number keys 1–6; Escape clears the active cue.
-- An isolated `/demo` sandbox with persistent demo banner, reset, a separate `demo:camera-fx-cues:` storage namespace, and a path to start real camera use.
-- Named local presets, separate for demo and real use.
-- Privacy and terms routes, a designed 404 page, static deploy headers/routing, service-worker shell cache, metadata, robots, sitemap, and self-hosted assets only.
-- A product-specific pixel/demoscene system. The original generated scene plate is in `assets/src/`; its optimized WebP is 37 KB. Asset prompt and provenance are recorded in `design.md`.
+Candidate `e77927dfb5c91be05a420670e33eabad6233666b` at `https://camera-fx-cues.sociobot.in` is **not accepted**. The live deployment exactly matches the candidate, so this is not a deployment-only failure.
 
-## Verify
+The detailed evidence is in `.factory/verification.md`. No product code was changed; this handoff and the verification report are the only intended changes.
+
+## Release blockers
+
+- Claim commands pass, but several tests do not prove their claims. Camera privacy is tested only with the synthetic demo, and multiple live/README privacy claims are absent from the claims registry. “Nothing is saved” also conflicts with persisted demo presets.
+- The researched brief’s required photosensitivity/reduced-motion warning is missing.
+- Cold-load H1 focus bypasses the skip link and header navigation until keyboard wraparound; multiple mobile controls are below 44 × 44 px.
+- Offline reload under the registered service worker is blank because hashed JavaScript and CSS are not cached.
+- Missing paths return HTTP 200. The standalone 404 page also violates the deployed CSP because it uses inline CSS.
+- Laser/zoom state conflicts with the bounded motion policy recorded in `.factory/design.md`.
+
+## Verification summary
 
 ```sh
-npm install
+npm ci
+npm test -- --grep @claim:sample-cues
+npm test -- --grep @claim:local-video
+npm test -- --grep @claim:preset-save
+npm test -- --grep @claim:keyboard-cues
+npm test -- --grep @claim:no-account
 npm test
 npm run build
 ```
 
-`npm test` passed: 7 Playwright tests, including all five claims in `.factory/claims.json`, keyboard controls, isolated preset storage, cross-origin request checks, mobile landmarks, and axe-core serious/critical checks.
+All five individual claim commands passed. The complete suite passed 7/7. TypeScript checking and the Vite production build passed. There is no separate lint command.
 
-`npm run build` passed and writes `dist/index.html` at the static deploy root. Final shipped JavaScript is 6.62 KB gzip and CSS is 3.19 KB gzip.
+The live HTML, JavaScript, and CSS SHA-256 hashes match the local production build. Normal same-origin flows have no console errors or cross-origin requests. A fake-camera flow on the live deployment ran all cues and stopped the stream on navigation. Camera denial recovery, preset boundaries/escaping/reset, history, desktop, 390 px, 200% text, reduced motion, and all legal/missing routes were exercised.
 
-Lighthouse 12.6.0 on the production preview: Performance **100**, Accessibility **100**, FCP **0.92 s**, LCP **1.38 s**, CLS **0**. The check used Chromium with `--headless --no-sandbox --disable-dev-shm-usage --disable-gpu`.
+Axe reported no serious/critical findings on the principal routes. Manual QA still found the keyboard-order and touch-target blockers above.
 
-## Known gaps
+Lighthouse 12.6.0 mobile on the live landing page measured Performance 94, Accessibility 100, Best Practices 100, SEO 100, FCP 0.9 s, LCP 1.2 s, CLS 0, and 48 KiB initial transfer. Worst measured cue/preset interaction duration was 80 ms. JavaScript is 17.34 KB raw / 6.62 KB gzip; CSS is 10.37 KB raw / 3.19 KB gzip.
 
-- Camera output depends on the browser and hardware. The sample signal is the fully deterministic verification path.
-- Effects intentionally do not anchor to faces. This avoids face recognition and keeps the cue vocabulary explicit.
+Rate limiting, Entra authentication, and package-consumer checks are not applicable because this is a static product with no API, sign-in, library, or CLI surface.
 
-## Next steps
+## Next step
 
-- Factory deployment should publish `dist/` to the configured static host.
-- Optional future work: allow users to export/import local presets as a small JSON file, without adding a backend.
+Repair every release blocker, add claim tests that observe the real promised outcomes, then perform a fresh independent verification. Do not promote this candidate as-is.
