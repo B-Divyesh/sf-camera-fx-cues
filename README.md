@@ -8,10 +8,10 @@ Open the live site at https://camera-fx-cues.sociobot.in or start at `/demo` for
 
 - Runs laser, outline, pixel burst, freeze, zoom, and shake cues.
 - Uses number keys 1–6 or on-screen cue pads.
-- Keeps camera processing in the current browser tab.
+- Keeps camera processing in the current browser tab and stops its track when you leave the camera page.
 - Saves named cue presets in browser storage on this device.
 
-It does not record video, identify faces, upload video, or provide social filters.
+It does not record, store, or upload camera video. It loads no analytics, advertising, or third-party scripts.
 
 ## Run locally
 
@@ -26,10 +26,11 @@ Open the local URL shown by Vite. Choose **Use your camera** to request local ca
 
 ```sh
 npm test
+npm run lint
 npm run build
 ```
 
-The production build is written to `dist/`, with `index.html` at its root. Deploy that directory as an Azure Static Web App. `staticwebapp.config.json` includes SPA fallback and security headers.
+The production build is written to `dist/`, with `index.html` at its root. Deploy that directory as an Azure Static Web App. `staticwebapp.config.json` includes explicit app routes, a true 404 response, and security headers.
 
 ## Privacy and demo
 

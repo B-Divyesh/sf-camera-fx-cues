@@ -23,6 +23,7 @@ let freezeFrame: ImageData | null = null;
 let pixelUntil = 0;
 let usingSample = false;
 let startTime = performance.now();
+let cueSequence = 0;
 
 const routeForPath = (): Mode => {
   if (location.pathname === '/demo' || location.search.includes('demo=1')) return 'demo';
@@ -49,16 +50,16 @@ function template(body: string, current: Mode) {
 function landing() {
   return template(`
     <section class="hero" aria-labelledby="hero-title">
-      <div class="hero-copy"><p class="eyebrow">LOCAL CAMERA INSTRUMENT // FREE</p><h1 id="hero-title">Trigger camera effects with keys</h1>
+      <div class="hero-copy"><p class="eyebrow">LOCAL CAMERA INSTRUMENT // NO ACCOUNT</p><h1 id="hero-title">Trigger camera effects with keys</h1>
         <p class="lead">For game-jam and classroom teams who need playful camera cues without sending video away.</p>
-        <div class="hero-actions"><a class="button primary" href="/demo" data-route>Try it with sample data</a><span>Opens a synthetic scene. Nothing is saved.</span></div>
-        <div class="facts" aria-label="Product facts"><p><span>01</span> Camera stays in your browser</p><p><span>02</span> Works with six number keys</p><p><span>03</span> Free. No account.</p></div>
+        <div class="hero-actions"><a class="button primary" href="/demo" data-route>Try it with sample data</a><span>Opens a synthetic scene. Your real presets stay untouched.</span></div>
+        <div class="facts" aria-label="Product facts"><p><span>01</span> Camera stays in your browser</p><p><span>02</span> Works with six number keys</p><p><span>03</span> Starts without an account</p></div>
       </div>
       <figure class="hero-art"><img src="/assets/demoscene-hero.webp" width="900" height="506" fetchpriority="high" decoding="async" alt="A pixel-art camera control room with cyan light beams." /><figcaption>ORIGINAL SCENE PLATE // GENERATED FOR THIS TOOL</figcaption></figure>
     </section>
-    <section class="entry-panel" aria-labelledby="start-title"><div><p class="eyebrow">READY WHEN YOU ARE</p><h2 id="start-title">Use a camera or a sample signal</h2><p>Choose a source. You can change it at any time.</p></div><div class="entry-actions"><button class="button primary" id="open-camera">Use your camera</button><button class="button quiet" id="open-sample">Open sample signal</button></div><p id="camera-message" class="status" role="status"></p></section>
+    <section class="entry-panel" aria-labelledby="start-title"><div><p class="eyebrow">BEFORE YOU START</p><h2 id="start-title">Choose a camera or sample signal</h2><p>Camera permission is requested only after you choose your camera.</p></div><div class="entry-actions"><button class="button primary" id="open-camera">Use your camera</button><button class="button quiet" id="open-sample">Open sample signal</button></div><aside class="safety-note" aria-labelledby="safety-title"><h3 id="safety-title">Motion and light warning</h3><p>Effects use sudden motion and bright contrast. If these may affect you, turn on reduced motion or do not start.</p></aside><p id="camera-message" class="status" role="status"></p></section>
     <section id="how" class="how" aria-labelledby="how-title"><p class="eyebrow">THREE STEPS</p><h2 id="how-title">Run a cue in your scene</h2><ol><li><b>1. Pick a source.</b><span>Allow your camera or start the sample signal.</span></li><li><b>2. Press a number key.</b><span>Keys 1–6 trigger the six effects.</span></li><li><b>3. Save a preset.</b><span>Keep your cue choice on this device.</span></li></ol></section>
-    <section class="privacy-note" aria-labelledby="boundary-title"><h2 id="boundary-title">What Camera FX Cues does not do</h2><p>It does not recognise faces, record clips, upload video, or offer beauty filters. Camera access is only used while this page is open.</p></section>
+    <section class="privacy-note" aria-labelledby="boundary-title"><h2 id="boundary-title">What Camera FX Cues does not do</h2><p>It does not record, store, or upload camera video. It has no analytics, advertising, accounts, or third-party scripts.</p></section>
   `, 'landing');
 }
 
@@ -69,8 +70,9 @@ function cueGrid() {
 function instrument(kind: 'demo' | 'live') {
   const isDemo = kind === 'demo';
   return template(`
-    ${isDemo ? `<aside class="demo-banner"><strong>DEMO — SAMPLE DATA, NOTHING IS SAVED</strong><span>This scene is generated in the browser.</span><button id="reset-demo">Reset demo</button><button id="start-real">Start for real</button></aside>` : ''}
+    ${isDemo ? `<aside class="demo-banner"><strong>DEMO — SAMPLE DATA, REAL PRESETS STAY SEPARATE</strong><span>Demo presets remain only until you reset or start for real.</span><button id="reset-demo">Reset demo</button><button id="start-real">Start for real</button></aside>` : ''}
     <section class="instrument" aria-labelledby="instrument-title"><div class="instrument-top"><div><p class="eyebrow">${isDemo ? 'SAMPLE SIGNAL // SAFE TO EXPERIMENT' : 'LIVE INPUT // LOCAL ONLY'}</p><h1 id="instrument-title">${isDemo ? 'Try all six camera cues' : 'Control your camera effects'}</h1><p class="instrument-help">Press 1–6, click a cue, or use Tab then Enter. Press Escape to clear an effect.</p></div><a href="/" data-route class="back-link">← Back to start</a></div>
+      <aside class="safety-note instrument-warning" aria-labelledby="instrument-safety-title"><h2 id="instrument-safety-title">Motion and light warning</h2><p>Effects use sudden motion and bright contrast. Turn on reduced motion or stop if you feel discomfort.</p></aside>
       <div class="stage-shell"><div class="stage" id="stage"><canvas id="camera-canvas" width="960" height="540" aria-label="${isDemo ? 'Animated sample camera signal' : 'Your camera preview'}"></canvas><div class="scanlines" aria-hidden="true"></div><div class="laser-overlay" aria-hidden="true"><i></i><i></i></div><div class="stage-readout" aria-live="polite"><span id="source-readout">${isDemo ? 'SAMPLE SIGNAL' : 'CONNECTING CAMERA'}</span><span id="cue-readout">READY</span></div></div></div>
       <div class="cue-panel"><div><h2>Effect cues</h2><p>One cue can run at a time. Freeze stays until you clear it.</p></div>${cueGrid()}</div>
       <section class="preset-panel" aria-labelledby="preset-title"><div><p class="eyebrow">LOCAL PRESETS</p><h2 id="preset-title">Save this cue setting</h2><p>Presets stay in this browser. Demo presets stay separate.</p></div><form id="preset-form"><label for="preset-name">Preset name</label><div class="preset-row"><input id="preset-name" name="preset-name" maxlength="28" placeholder="Boss intro" required><button class="button primary" type="submit">Save preset</button></div><p id="preset-feedback" class="status" role="status"></p></form><div id="preset-list" class="preset-list" aria-live="polite"></div></section>
@@ -81,7 +83,7 @@ function instrument(kind: 'demo' | 'live') {
 
 function textPage(type: 'privacy' | 'terms') {
   const privacy = type === 'privacy';
-  return template(`<article class="legal"><p class="eyebrow">${privacy ? 'PRIVACY' : 'TERMS'}</p><h1>${privacy ? 'Your camera stays on your device' : 'Use this cue tool safely'}</h1>${privacy ? `<h2>Camera access</h2><p>Camera FX Cues asks for camera permission only after you choose it. Video is processed in the current browser tab. It is never uploaded, recorded, or stored.</p><h2>Local settings</h2><p>Saved presets use browser storage on this device. Demo presets use a separate demo storage area. You can clear them from the preset controls or your browser settings.</p><h2>No tracking</h2><p>This site has no analytics, advertising, accounts, or third-party scripts.</p>` : `<h2>Use with consent</h2><p>Get permission before showing someone on camera. Do not use the tool to identify people or collect video.</p><h2>Availability</h2><p>This free tool is provided as-is. Effects can vary by browser and camera hardware.</p><h2>Your choices</h2><p>You control camera permission and local presets. You can stop the camera by leaving the page or closing the tab.</p>`}</article>`, type);
+  return template(`<article class="legal"><p class="eyebrow">${privacy ? 'PRIVACY' : 'TERMS'}</p><h1>${privacy ? 'Your camera stays on your device' : 'Use this cue tool safely'}</h1>${privacy ? `<h2>Camera access</h2><p>Camera FX Cues asks for camera permission only after you choose it. Video is processed in the current browser tab. It is never uploaded, recorded, or stored.</p><h2>Local settings</h2><p>Saved presets use browser storage on this device. Demo presets use a separate demo storage area. You can clear them from the preset controls or your browser settings.</p><h2>No tracking</h2><p>This site has no analytics, advertising, accounts, or third-party scripts.</p>` : `<h2>Use with consent</h2><p>Get permission before showing someone on camera. Do not use the tool to identify people or collect video.</p><h2>Availability</h2><p>This tool is provided as-is. Effects can vary by browser and camera hardware.</p><h2>Your choices</h2><p>You control camera permission and local presets. You can stop the camera by leaving the page or closing the tab.</p>`}</article>`, type);
 }
 
 function missing() { return template(`<article class="legal missing"><p class="eyebrow">404 // SIGNAL LOST</p><h1>This cue page is not here</h1><p>Return to the camera control room and choose a source.</p><a href="/" data-route class="button primary">Open Camera FX Cues</a></article>`, 'missing'); }
@@ -104,14 +106,15 @@ function render(next = routeForPath()) {
   const h1 = document.querySelector<HTMLElement>('h1');
   document.querySelector('#route-status')!.textContent = h1?.textContent || 'Page loaded';
   if (h1) h1.tabIndex = -1;
-  requestAnimationFrame(() => h1?.focus({ preventScroll: true }));
   bindCommon();
   updateConnectivity();
   if (next === 'demo') startSample();
   if (next === 'live') startCamera();
 }
 
-function navigate(path: string) { history.pushState({}, '', path); render(); window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); }
+function navigate(path: string) { history.pushState({}, '', path); render(); focusRouteHeading(); window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); }
+
+function focusRouteHeading() { requestAnimationFrame(() => document.querySelector<HTMLElement>('h1')?.focus({ preventScroll: true })); }
 
 function bindCommon() {
   document.querySelectorAll<HTMLElement>('[data-route]').forEach(link => link.addEventListener('click', event => { const href = link.getAttribute('href'); if (!href || href.startsWith('#')) return; event.preventDefault(); navigate(href); }));
@@ -180,17 +183,20 @@ function drawPixels(ctx: CanvasRenderingContext2D, w: number, h: number, now: nu
 
 function triggerCue(cue: CueId) {
   const canvas = document.querySelector<HTMLCanvasElement>('#camera-canvas'); if (!canvas) return;
+  const sequence = ++cueSequence;
   activeCue = activeCue === cue && cue !== 'freeze' ? null : cue;
   if (cue === 'freeze' && activeCue === 'freeze') { const ctx = canvas.getContext('2d'); freezeFrame = ctx?.getImageData(0, 0, canvas.width, canvas.height) || null; }
-  if (cue === 'pixel') { pixelUntil = performance.now() + 520; window.setTimeout(() => { if (activeCue === 'pixel') clearCue(); }, 530); }
-  if (cue === 'shake') window.setTimeout(() => { if (activeCue === 'shake') clearCue(); }, 480);
+  const durations: Partial<Record<CueId, number>> = { laser: 500, pixel: 500, zoom: 420, shake: 480 };
+  if (cue === 'pixel') pixelUntil = performance.now() + durations.pixel!;
+  const duration = durations[cue];
+  if (duration) window.setTimeout(() => { if (sequence === cueSequence && activeCue === cue) clearCue(); }, duration);
   updateCueUi();
 }
 
-function clearCue() { activeCue = null; freezeFrame = null; document.querySelector<HTMLCanvasElement>('#camera-canvas')?.classList.remove('is-frozen'); updateCueUi(); }
+function clearCue() { cueSequence++; activeCue = null; freezeFrame = null; pixelUntil = 0; document.querySelector<HTMLCanvasElement>('#camera-canvas')?.classList.remove('is-frozen'); updateCueUi(); }
 
 function updateCueUi() {
-  const stage = document.querySelector('#stage'); stage?.classList.toggle('is-laser', activeCue === 'laser'); stage?.classList.toggle('is-zoom', activeCue === 'zoom'); stage?.classList.toggle('is-shake', activeCue === 'shake');
+  const stage = document.querySelector('#stage'); cueList.forEach(cue => stage?.classList.toggle(`is-${cue.id}`, activeCue === cue.id));
   document.querySelectorAll<HTMLButtonElement>('[data-cue]').forEach(button => { const active = button.dataset.cue === activeCue; button.setAttribute('aria-pressed', String(active)); button.classList.toggle('active', active); });
   const label = activeCue ? cueList.find(c => c.id === activeCue)?.label.toUpperCase() : 'READY'; const readout = document.querySelector('#cue-readout'); if (readout) readout.textContent = label || 'READY';
 }
@@ -207,7 +213,7 @@ function escapeHtml(value: string) { const div = document.createElement('div'); 
 function updateConnectivity() { const notice = document.querySelector<HTMLElement>('#offline-notice'); if (!notice) return; notice.hidden = navigator.onLine; }
 
 window.addEventListener('keydown', event => { if (!['demo', 'live'].includes(mode) || event.metaKey || event.ctrlKey || event.altKey) return; const target = event.target as HTMLElement; if (target.matches('input, textarea')) return; if (event.key === 'Escape') { clearCue(); return; } const cue = cueList.find(c => c.key === event.key); if (cue) { event.preventDefault(); triggerCue(cue.id); } });
-window.addEventListener('popstate', () => render());
+window.addEventListener('popstate', () => { render(); focusRouteHeading(); });
 window.addEventListener('beforeunload', stopCamera);
 window.addEventListener('online', updateConnectivity);
 window.addEventListener('offline', updateConnectivity);

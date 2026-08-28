@@ -4,34 +4,62 @@
     "claim": "Try all six cues with the sample scene",
     "where": "landing and demo cue grid",
     "test": "npm test -- --grep @claim:sample-cues",
-    "sandbox": "fresh browser context at /demo; click every cue and assert each active status"
+    "sandbox": "fresh browser context at /demo; activate every cue and assert its rendered canvas, overlay, or animation state"
   },
   {
     "id": "local-video",
-    "claim": "Camera video stays in this browser",
-    "where": "landing privacy fact and privacy page",
+    "claim": "Camera video stays in this browser, and leaving the camera page stops its media track",
+    "where": "landing, privacy, terms, and README",
     "test": "npm test -- --grep @claim:local-video",
-    "sandbox": "fresh browser context at /demo; intercept requests during the full demo flow and assert only same-origin requests"
+    "sandbox": "fresh browser context with a fake camera; assert permission begins only after the camera action, rendered camera frames, only same-origin requests, and an ended track after navigation"
   },
   {
     "id": "preset-save",
     "claim": "Save cue settings on this device",
-    "where": "preset controls",
+    "where": "preset controls and README",
     "test": "npm test -- --grep @claim:preset-save",
-    "sandbox": "fresh browser context at /demo; save a named preset and assert it reappears after reload"
+    "sandbox": "fresh browser context at /demo; save a named preset and assert the demo namespace and restored preset after reload"
   },
   {
     "id": "keyboard-cues",
     "claim": "Works with six number keys",
     "where": "landing fact and demo controls",
     "test": "npm test -- --grep @claim:keyboard-cues",
-    "sandbox": "fresh browser context at /demo; press keys 1 through 6 and assert each named cue"
+    "sandbox": "fresh browser context at /demo; press keys 1 through 6 and assert each rendered effect state"
+  },
+  {
+    "id": "keyboard-operation",
+    "claim": "Interactive controls work with Tab and Enter, Escape clears a cue, and SPA route changes focus their heading",
+    "where": "instrument instructions and accessibility behavior",
+    "test": "npm test -- --grep @claim:keyboard-operation",
+    "sandbox": "fresh browser context; assert cold-load skip-link order, route focus, Enter activation, and Escape clearing"
+  },
+  {
+    "id": "reduced-motion",
+    "claim": "Reduced-motion settings remove zoom and shake movement",
+    "where": "motion warning and design policy",
+    "test": "npm test -- --grep @claim:reduced-motion",
+    "sandbox": "fresh browser context emulating prefers-reduced-motion: reduce; activate zoom and assert no animation"
   },
   {
     "id": "no-account",
-    "claim": "Free. No account.",
-    "where": "landing fact",
+    "claim": "Starts without an account",
+    "where": "landing fact and privacy page",
     "test": "npm test -- --grep @claim:no-account",
-    "sandbox": "fresh browser context at /; assert the product starts without a sign-in or account form"
+    "sandbox": "fresh browser context at /; start the complete sample scene and trigger a cue without a sign-in, account, or payment form"
+  },
+  {
+    "id": "demo-isolation",
+    "claim": "Demo presets stay separate from real presets and are removed by Reset demo or Start for real",
+    "where": "demo banner, preset controls, demo documentation",
+    "test": "npm test -- --grep @claim:demo-isolation",
+    "sandbox": "fresh browser context with a real preset sentinel; save and reset demo data, then repeat and start for real; assert real data is unchanged"
+  },
+  {
+    "id": "privacy-scope",
+    "claim": "Camera video is never uploaded, recorded, or stored; the site has no analytics, advertising, or third-party scripts",
+    "where": "landing boundary, privacy page, demo documentation, and README",
+    "test": "npm test -- --grep @claim:privacy-scope",
+    "sandbox": "fresh browser context with fake camera and instrumented MediaRecorder/storage/network; exercise all cues and assert no recorder, camera payload storage, or cross-origin request"
   }
 ]
