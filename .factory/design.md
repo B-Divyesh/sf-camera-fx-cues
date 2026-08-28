@@ -23,6 +23,8 @@ The product is deliberately dark-only: camera footage and bright effect colours 
 
 Display text is a local monospace stack (`ui-monospace`, `SFMono-Regular`, `Consolas`) used with broad tracking, like a debug overlay. Body text uses the local system UI stack for clear small instructions. The spacing unit is 8px; the scene uses 8, 16, 24, 32, 48 and 72px gaps. Hard square corners and inset highlights replace generic rounded cards.
 
+On a 390px phone, the generated camera art becomes a 96px broadcast strip above the headline. This keeps the CTA explanation and privacy/offline/price facts in the first screen without dropping the control-room identity.
+
 ## Interaction and motion
 
 Cue pads light immediately from the key that triggered them. Laser, pixels, zoom and shake are short, bounded 160–500ms effects; freeze stays until released. The active cue is always named in a live status region. With reduced motion, shake and zoom stop moving, the pixel burst becomes a still pattern, and no animation loops.

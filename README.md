@@ -1,8 +1,8 @@
 # Camera FX Cues
 
-Trigger playful camera effects with keys. It is for game-jam and classroom teams that need clear, local camera cues.
+Trigger playful camera effects with keys. It is for game-jam and classroom teams that need keyboard-controlled, local camera cues.
 
-Open the live site at https://camera-fx-cues.sociobot.in or start at `/?demo=1` for the safe sample signal.
+Open the live site at https://camera-fx-cues.sociobot.in or start at `/?demo=1` for the bundled sample signal.
 
 ## What Camera FX Cues does
 

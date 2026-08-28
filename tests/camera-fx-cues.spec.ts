@@ -119,12 +119,18 @@ test('@claim:keyboard-cues number keys activate rendered cue states', async ({ p
   }
 });
 
-test('@claim:no-account sample instrument starts without sign-in or payment', async ({ page }) => {
+test('@claim:no-account full sample instrument is free and starts without an account', async ({ page }) => {
   await page.goto('/');
   await page.getByRole('link', { name: 'Try it with sample data' }).click();
   await expect(page.locator('#source-readout')).toHaveText('JAM DESK // SAMPLE SIGNAL');
-  await page.getByRole('button', { name: /Laser/ }).click();
-  await expect(page.locator('#stage')).toHaveClass(/is-laser/);
+  for (const id of ['laser', 'outline', 'pixel', 'freeze', 'zoom', 'shake']) {
+    await page.locator(`[data-cue="${id}"]`).click();
+    await expect(page.locator('#stage')).toHaveClass(new RegExp(`is-${id}`));
+  }
+  await page.locator('[data-cue="outline"]').click();
+  await page.getByLabel('Preset name').fill('Free demo preset');
+  await page.getByRole('button', { name: 'Save preset' }).click();
+  await expect(page.getByText('Saved Free demo preset on this device.')).toBeVisible();
   await expect(page.locator('input[type="email"], input[type="password"], [href*="login"], [href*="checkout"]')).toHaveCount(0);
 });
 
@@ -242,6 +248,22 @@ test('one-click query demo opens an active sample above the mobile fold', async 
   await expect(page.locator('#cue-readout')).toHaveText('OUTLINE');
 });
 
+test('landing action explanation and privacy, offline, and price facts fit the first phone screen', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+  const required = [
+    page.getByRole('link', { name: 'Try it with sample data' }),
+    page.getByText('Opens the sample signal. Your real presets stay untouched.'),
+    page.getByText('Camera stays in this browser'),
+    page.getByText('Works offline after your first visit'),
+    page.getByText('Free; no account needed')
+  ];
+  for (const locator of required) {
+    await expect(locator).toBeVisible();
+    expect((await locator.boundingBox())!.y + (await locator.boundingBox())!.height).toBeLessThanOrEqual(844);
+  }
+});
+
 test('bounded effects return to ready and clear pressed state', async ({ page }) => {
   await page.goto('/demo');
   for (const id of ['laser', 'pixel', 'zoom', 'shake']) {
@@ -254,7 +276,7 @@ test('bounded effects return to ready and clear pressed state', async ({ page })
   }
 });
 
-test('complete shell reloads offline after one visit', async ({ context, page }) => {
+test('@claim:offline-reload complete shell reloads offline after one visit', async ({ context, page }) => {
   await page.goto('/?demo=1');
   await page.evaluate(async () => {
     await navigator.serviceWorker.ready;
@@ -295,7 +317,8 @@ test('SWA missing routes use a true 404 and the 404 page obeys CSP', async ({ pa
   await expect(page.locator('link[rel="apple-touch-icon"]')).toHaveAttribute('href', '/apple-touch-icon.png');
   await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', /og-camera-fx-cues\.webp$/);
   await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute('content', 'summary_large_image');
-  await expect(page.getByRole('link', { name: 'Privacy' })).toHaveAttribute('href', '/privacy');
+  await expect(page.getByRole('navigation', { name: 'Primary' }).getByRole('link', { name: 'Demo' })).toHaveAttribute('href', '/demo');
+  await expect(page.getByRole('navigation', { name: 'Primary' }).getByRole('link', { name: 'Privacy' })).toHaveAttribute('href', '/privacy');
   await expect(page.getByRole('link', { name: 'Terms' })).toHaveAttribute('href', '/terms');
   await expect(page.getByText('Built by Param Factory · v1.0.0')).toBeVisible();
   await expect(page.locator('main')).toHaveCSS('background-color', 'rgb(20, 25, 54)');
@@ -328,6 +351,73 @@ test('routes set titles, metadata, focus, history, and legal links', async ({ pa
   await page.goBack();
   await expect(page).toHaveURL('/');
   await expect(page.locator('h1')).toBeFocused();
+});
+
+test('Back and Forward restore route scroll positions while focusing headings', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+  await page.evaluate(() => {
+    document.documentElement.style.scrollBehavior = 'auto';
+    window.scrollTo(0, 1450);
+  });
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(1200);
+  const landingScroll = await page.evaluate(() => window.scrollY);
+  await page.getByRole('link', { name: 'Privacy', exact: true }).last().click();
+  await expect(page).toHaveURL(/\/privacy$/);
+  await page.evaluate(() => window.scrollTo(0, 180));
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(100);
+  const privacyScroll = await page.evaluate(() => window.scrollY);
+  await page.goBack();
+  await expect(page).toHaveURL(/\/$/);
+  await expect(page.locator('h1')).toBeFocused();
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeCloseTo(landingScroll, -1);
+  await page.goForward();
+  await expect(page).toHaveURL(/\/privacy$/);
+  await expect(page.locator('h1')).toBeFocused();
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBeCloseTo(privacyScroll, -1);
+});
+
+test('sitemap lists every public application route', async () => {
+  const config = JSON.parse(await readFile('public/staticwebapp.config.json', 'utf8'));
+  const sitemap = await readFile('public/sitemap.xml', 'utf8');
+  const declared = ['/', ...config.routes
+    .filter((route: { rewrite?: string }) => route.rewrite === '/index.html')
+    .map((route: { route: string }) => route.route)];
+  const listed = [...sitemap.matchAll(/<loc>https:\/\/camera-fx-cues\.sociobot\.in([^<]*)<\/loc>/g)]
+    .map(match => match[1] || '/');
+  expect(new Set(listed)).toEqual(new Set(declared));
+});
+
+test('claims registry gives every claim one exact observable test tag', async () => {
+  const claims = JSON.parse(await readFile('.factory/claims.json', 'utf8')) as { id: string; test: string; sandbox: string }[];
+  const source = await readFile('tests/camera-fx-cues.spec.ts', 'utf8');
+  expect(new Set(claims.map(claim => claim.id)).size).toBe(claims.length);
+  for (const claim of claims) {
+    expect(claim.test).toBe(`npm test -- --grep @claim:${claim.id}`);
+    expect(claim.sandbox.length).toBeGreaterThan(30);
+    expect(source.match(new RegExp(`@claim:${claim.id}(?![\\w-])`, 'g')) || []).toHaveLength(1);
+  }
+});
+
+test('every application route has its own title, metadata, landmark, and legal footer', async ({ page }) => {
+  const routes = [
+    { path: '/', title: 'Camera FX Cues — Trigger camera effects with keys', canonical: '/' },
+    { path: '/?demo=1', title: 'Demo — Camera FX Cues', canonical: '/demo' },
+    { path: '/demo', title: 'Demo — Camera FX Cues', canonical: '/demo' },
+    { path: '/camera', title: 'Camera input — Camera FX Cues', canonical: '/camera' },
+    { path: '/privacy', title: 'Privacy — Camera FX Cues', canonical: '/privacy' },
+    { path: '/terms', title: 'Terms — Camera FX Cues', canonical: '/terms' }
+  ];
+  for (const route of routes) {
+    await page.goto(route.path);
+    await expect(page).toHaveTitle(route.title);
+    await expect(page.locator('main')).toHaveCount(1);
+    await expect(page.locator('h1')).toHaveCount(1);
+    await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /.+/);
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `https://camera-fx-cues.sociobot.in${route.canonical}`);
+    await expect(page.getByRole('link', { name: 'Privacy', exact: true }).last()).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Terms', exact: true }).last()).toBeVisible();
+  }
 });
 
 test('principal routes have clean semantics, accessibility, and console', async ({ page }) => {

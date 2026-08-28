@@ -24,6 +24,7 @@ let pixelUntil = 0;
 let usingSample = false;
 let startTime = performance.now();
 let cueSequence = 0;
+type RouteState = { scrollX?: number; scrollY?: number };
 
 const routeForPath = (): Mode => {
   if (location.pathname === '/demo' || new URLSearchParams(location.search).get('demo') === '1') return 'demo';
@@ -53,9 +54,9 @@ function landing() {
       <div class="hero-copy"><p class="eyebrow">LOCAL CAMERA EFFECTS // NO ACCOUNT</p><h1 id="hero-title">Trigger camera effects with keys</h1>
         <p class="lead">For game-jam and classroom teams who need playful camera cues without sending video away.</p>
         <div class="hero-actions"><a class="button primary" href="/?demo=1" data-route>Try it with sample data</a><span>Opens the sample signal. Your real presets stay untouched.</span></div>
-        <div class="facts" aria-label="Product facts"><p><span>01</span> Camera stays in your browser</p><p><span>02</span> Works with six number keys</p><p><span>03</span> Starts without an account</p></div>
+        <div class="facts" aria-label="Product facts"><p><span>01</span> Camera stays in this browser</p><p><span>02</span> Works offline after your first visit</p><p><span>03</span> Free; no account needed</p></div>
       </div>
-      <figure class="hero-art"><img src="/assets/demoscene-hero.webp" width="900" height="506" fetchpriority="high" decoding="async" alt="A pixel-art camera control room with cyan light beams." /><figcaption>ORIGINAL SCENE PLATE // GENERATED FOR THIS TOOL</figcaption></figure>
+      <figure class="hero-art"><img src="/assets/demoscene-hero.webp" width="900" height="506" fetchpriority="high" decoding="async" alt="A pixel-art camera control room with cyan light beams." /><figcaption>ORIGINAL CAMERA ART // MADE FOR THIS TOOL</figcaption></figure>
     </section>
     <section class="entry-panel" aria-labelledby="start-title"><div><p class="eyebrow">BEFORE YOU START</p><h2 id="start-title">Choose a camera or sample signal</h2><p>Camera permission is requested only after you choose your camera.</p></div><div class="entry-actions"><button class="button primary" id="open-camera">Use your camera</button><button class="button quiet" id="open-sample">Open sample signal</button></div><aside class="safety-note" aria-labelledby="safety-title"><h3 id="safety-title">Motion and light warning</h3><p>Effects use sudden motion and bright contrast. If these may affect you, turn on reduced motion or do not start.</p></aside><p id="camera-message" class="status" role="status"></p></section>
     <section id="how" class="how" aria-labelledby="how-title"><p class="eyebrow">THREE STEPS</p><h2 id="how-title">Run a cue in your scene</h2><ol><li><b>1. Pick a source.</b><span>Allow your camera or start the sample signal.</span></li><li><b>2. Press a number key.</b><span>Keys 1–6 trigger the six effects.</span></li><li><b>3. Save a preset.</b><span>Keep your cue choice on this device.</span></li></ol></section>
@@ -96,7 +97,7 @@ function render(next = routeForPath()) {
   app.innerHTML = next === 'landing' ? landing() : next === 'demo' ? instrument('demo') : next === 'live' ? instrument('live') : next === 'privacy' || next === 'terms' ? textPage(next) : missing();
   const titles: Record<Mode, string> = { landing: 'Camera FX Cues — Trigger camera effects with keys', demo: 'Demo — Camera FX Cues', live: 'Camera input — Camera FX Cues', privacy: 'Privacy — Camera FX Cues', terms: 'Terms — Camera FX Cues', missing: 'Signal lost — Camera FX Cues' };
   document.title = titles[next];
-  const descriptions: Record<Mode, string> = { landing: 'Trigger playful camera effects with clear keys. Built for game jams and classrooms.', demo: 'Try six camera cues on a game-jam desk sample signal.', live: 'Use local camera input with six keyboard-triggered effects.', privacy: 'Camera FX Cues processes video in the current browser tab.', terms: 'Terms for using Camera FX Cues safely.', missing: 'This Camera FX Cues page is not available.' };
+  const descriptions: Record<Mode, string> = { landing: 'Trigger six camera effects with number keys. Built for game jams and classrooms.', demo: 'Try six camera cues on a game-jam desk sample signal.', live: 'Use local camera input with six keyboard-triggered effects.', privacy: 'Camera FX Cues processes video in the current browser tab.', terms: 'Terms for using Camera FX Cues safely.', missing: 'This Camera FX Cues page is not available.' };
   document.querySelector<HTMLMetaElement>('meta[name="description"]')?.setAttribute('content', descriptions[next]);
   const canonicalPath = next === 'landing' ? '/' : next === 'demo' ? '/demo' : location.pathname;
   document.querySelector<HTMLLinkElement>('link[rel="canonical"]')?.setAttribute('href', `https://camera-fx-cues.sociobot.in${canonicalPath}`);
@@ -113,7 +114,25 @@ function render(next = routeForPath()) {
   if (next === 'live') startCamera();
 }
 
-function navigate(path: string) { history.pushState({}, '', path); render(); focusRouteHeading(); window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); }
+function rememberScroll() {
+  const state = (history.state || {}) as RouteState;
+  history.replaceState({ ...state, scrollX: window.scrollX, scrollY: window.scrollY }, '', location.href);
+}
+
+function scrollInstant(left: number, top: number) {
+  const behavior = document.documentElement.style.scrollBehavior;
+  document.documentElement.style.scrollBehavior = 'auto';
+  window.scrollTo({ left, top, behavior: 'auto' });
+  document.documentElement.style.scrollBehavior = behavior;
+}
+
+function navigate(path: string) {
+  rememberScroll();
+  history.pushState({ scrollX: 0, scrollY: 0 } satisfies RouteState, '', path);
+  render();
+  scrollInstant(0, 0);
+  focusRouteHeading();
+}
 
 function focusRouteHeading() { requestAnimationFrame(() => document.querySelector<HTMLElement>('h1')?.focus({ preventScroll: true })); }
 
@@ -235,7 +254,17 @@ function escapeHtml(value: string) { const div = document.createElement('div'); 
 function updateConnectivity() { const notice = document.querySelector<HTMLElement>('#offline-notice'); if (!notice) return; notice.hidden = navigator.onLine; }
 
 window.addEventListener('keydown', event => { if (!['demo', 'live'].includes(mode) || event.metaKey || event.ctrlKey || event.altKey) return; const target = event.target as HTMLElement; if (target.matches('input, textarea')) return; if (event.key === 'Escape') { clearCue(); return; } const cue = cueList.find(c => c.key === event.key); if (cue) { event.preventDefault(); triggerCue(cue.id); } });
-window.addEventListener('popstate', () => { render(); focusRouteHeading(); });
+history.scrollRestoration = 'manual';
+if (!history.state) history.replaceState({ scrollX: window.scrollX, scrollY: window.scrollY } satisfies RouteState, '', location.href);
+window.addEventListener('scroll', rememberScroll, { passive: true });
+window.addEventListener('popstate', event => {
+  render();
+  const state = (event.state || {}) as RouteState;
+  requestAnimationFrame(() => {
+    scrollInstant(state.scrollX || 0, state.scrollY || 0);
+    focusRouteHeading();
+  });
+});
 window.addEventListener('beforeunload', stopCamera);
 window.addEventListener('online', updateConnectivity);
 window.addEventListener('offline', updateConnectivity);

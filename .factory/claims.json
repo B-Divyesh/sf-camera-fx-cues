@@ -43,10 +43,17 @@
   },
   {
     "id": "no-account",
-    "claim": "Starts without an account",
+    "claim": "The complete sample instrument is free and starts without an account",
     "where": "landing fact and privacy page",
     "test": "npm test -- --grep @claim:no-account",
-    "sandbox": "fresh browser context at /; start the complete sample signal and trigger a cue without a sign-in, account, or payment form"
+    "sandbox": "fresh browser context at /; open the demo, exercise all six cues, save a preset, and assert there is no sign-in or payment path"
+  },
+  {
+    "id": "offline-reload",
+    "claim": "Works offline after your first visit",
+    "where": "landing fact",
+    "test": "npm test -- --grep @claim:offline-reload",
+    "sandbox": "fresh browser context at /?demo=1; wait for service-worker control, clear the HTTP cache, go offline, reload, and assert the complete styled demo remains usable"
   },
   {
     "id": "demo-isolation",
