@@ -1,0 +1,33 @@
+{
+  "url": "https://camera-fx-cues.sociobot.in",
+  "viewport": "390x844",
+  "foldBottoms": [
+    643.9375,
+    732.9375
+  ],
+  "storage": {
+    "demo": null,
+    "real": "[{\"name\":\"Live real\",\"cue\":\"laser\"}]"
+  },
+  "routeEvidence": {
+    "/privacy": {
+      "title": "Privacy — Camera FX Cues",
+      "canonical": "https://camera-fx-cues.sociobot.in/privacy"
+    },
+    "/terms": {
+      "title": "Terms — Camera FX Cues",
+      "canonical": "https://camera-fx-cues.sociobot.in/terms"
+    }
+  },
+  "unknownStatus": 404,
+  "axe": {
+    "/": 0,
+    "/?demo=1": 0,
+    "/privacy": 0,
+    "/terms": 0,
+    "/404.html": 0
+  },
+  "normalRouteErrors": [],
+  "remote": [],
+  "offlineReload": true
+}
