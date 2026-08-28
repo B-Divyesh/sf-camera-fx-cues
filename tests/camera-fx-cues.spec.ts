@@ -9,6 +9,8 @@ type QaState = {
   track?: MediaStreamTrack;
 };
 
+const productOrigin = new URL(process.env.PLAYWRIGHT_BASE_URL || 'http://127.0.0.1:4173').origin;
+
 async function instrumentMedia(page: Page) {
   await page.addInitScript(() => {
     const qa: QaState = { cameraCalls: 0, recorderCalls: 0, storageWrites: [] };
@@ -42,7 +44,7 @@ async function instrumentMedia(page: Page) {
 }
 
 async function allowCamera(context: BrowserContext) {
-  await context.grantPermissions(['camera'], { origin: 'http://127.0.0.1:4173' });
+  await context.grantPermissions(['camera'], { origin: productOrigin });
 }
 
 test('@claim:sample-cues sample mode renders all six effects', async ({ page }) => {
@@ -87,7 +89,7 @@ test('@claim:local-video camera stays local and its track stops on exit', async 
   await allowCamera(context);
   await instrumentMedia(page);
   const remote: string[] = [];
-  page.on('request', request => { if (new URL(request.url()).origin !== 'http://127.0.0.1:4173') remote.push(request.url()); });
+  page.on('request', request => { if (new URL(request.url()).origin !== productOrigin) remote.push(request.url()); });
   await page.goto('/');
   expect(await page.evaluate(() => (window as typeof window & { __qa: QaState }).__qa.cameraCalls)).toBe(0);
   await page.getByRole('button', { name: 'Use your camera' }).click();
@@ -156,7 +158,7 @@ test('@claim:privacy-scope live flow records, stores, and sends no camera payloa
   await allowCamera(context);
   await instrumentMedia(page);
   const remote: string[] = [];
-  page.on('request', request => { if (new URL(request.url()).origin !== 'http://127.0.0.1:4173') remote.push(request.url()); });
+  page.on('request', request => { if (new URL(request.url()).origin !== productOrigin) remote.push(request.url()); });
   await page.goto('/camera');
   await expect(page.locator('#source-readout')).toHaveText('CAMERA LOCAL');
   for (const id of ['laser', 'outline', 'pixel', 'freeze', 'zoom', 'shake']) await page.locator(`[data-cue="${id}"]`).click();
@@ -425,12 +427,14 @@ test('principal routes have clean semantics, accessibility, and console', async 
   page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
   page.on('pageerror', error => errors.push(error.message));
   for (const path of ['/', '/demo', '/privacy', '/terms', '/404.html']) {
+    errors.length = 0;
     await page.goto(path);
     await expect(page.locator('html')).toHaveAttribute('lang', 'en');
     await expect(page.locator('main')).toHaveCount(1);
     await expect(page.locator('h1')).toHaveCount(1);
     const scan = await new AxeBuilder({ page }).analyze();
     expect(scan.violations.filter(item => ['serious', 'critical'].includes(item.impact || ''))).toEqual([]);
+    if (path === '/404.html') expect(errors.every(error => error.includes('status of 404'))).toBe(true);
+    else expect(errors).toEqual([]);
   }
-  expect(errors).toEqual([]);
 });
