@@ -196,6 +196,16 @@ test('all visible controls meet 44 by 44 CSS pixel touch targets at 390px', asyn
   }
 });
 
+test('200 percent text remains usable without horizontal page overflow', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  for (const path of ['/', '/demo', '/privacy', '/terms']) {
+    await page.goto(path);
+    await page.evaluate(() => { document.documentElement.style.fontSize = '200%'; });
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true);
+    await expect(page.locator('h1')).toBeVisible();
+  }
+});
+
 test('@claim:reduced-motion warning is present and reduced motion removes movement', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/');
