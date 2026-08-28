@@ -24,7 +24,12 @@ let pixelUntil = 0;
 let usingSample = false;
 let startTime = performance.now();
 let cueSequence = 0;
-type RouteState = { scrollX?: number; scrollY?: number };
+type RouteState = { entryId?: string; scrollX?: number; scrollY?: number };
+const scrollPositions = new Map<string, { scrollX: number; scrollY: number }>();
+let routeEntrySequence = 0;
+let currentEntryId = '';
+
+function newRouteEntryId() { return `route-${Date.now()}-${routeEntrySequence++}`; }
 
 const routeForPath = (): Mode => {
   if (location.pathname === '/demo' || new URLSearchParams(location.search).get('demo') === '1') return 'demo';
@@ -116,7 +121,9 @@ function render(next = routeForPath()) {
 
 function rememberScroll() {
   const state = (history.state || {}) as RouteState;
-  history.replaceState({ ...state, scrollX: window.scrollX, scrollY: window.scrollY }, '', location.href);
+  const position = { scrollX: window.scrollX, scrollY: window.scrollY };
+  scrollPositions.set(currentEntryId, position);
+  history.replaceState({ ...state, entryId: currentEntryId, ...position }, '', location.href);
 }
 
 function scrollInstant(left: number, top: number) {
@@ -128,7 +135,9 @@ function scrollInstant(left: number, top: number) {
 
 function navigate(path: string) {
   rememberScroll();
-  history.pushState({ scrollX: 0, scrollY: 0 } satisfies RouteState, '', path);
+  currentEntryId = newRouteEntryId();
+  scrollPositions.set(currentEntryId, { scrollX: 0, scrollY: 0 });
+  history.pushState({ entryId: currentEntryId, scrollX: 0, scrollY: 0 } satisfies RouteState, '', path);
   render();
   scrollInstant(0, 0);
   focusRouteHeading();
@@ -255,13 +264,19 @@ function updateConnectivity() { const notice = document.querySelector<HTMLElemen
 
 window.addEventListener('keydown', event => { if (!['demo', 'live'].includes(mode) || event.metaKey || event.ctrlKey || event.altKey) return; const target = event.target as HTMLElement; if (target.matches('input, textarea')) return; if (event.key === 'Escape') { clearCue(); return; } const cue = cueList.find(c => c.key === event.key); if (cue) { event.preventDefault(); triggerCue(cue.id); } });
 history.scrollRestoration = 'manual';
-if (!history.state) history.replaceState({ scrollX: window.scrollX, scrollY: window.scrollY } satisfies RouteState, '', location.href);
+const initialRouteState = (history.state || {}) as RouteState;
+currentEntryId = initialRouteState.entryId || newRouteEntryId();
+scrollPositions.set(currentEntryId, { scrollX: initialRouteState.scrollX ?? window.scrollX, scrollY: initialRouteState.scrollY ?? window.scrollY });
+history.replaceState({ ...initialRouteState, entryId: currentEntryId, scrollX: initialRouteState.scrollX ?? window.scrollX, scrollY: initialRouteState.scrollY ?? window.scrollY } satisfies RouteState, '', location.href);
 window.addEventListener('scroll', rememberScroll, { passive: true });
 window.addEventListener('popstate', event => {
+  scrollPositions.set(currentEntryId, { scrollX: window.scrollX, scrollY: window.scrollY });
   render();
   const state = (event.state || {}) as RouteState;
+  currentEntryId = state.entryId || newRouteEntryId();
+  const position = scrollPositions.get(currentEntryId) || { scrollX: state.scrollX || 0, scrollY: state.scrollY || 0 };
   requestAnimationFrame(() => {
-    scrollInstant(state.scrollX || 0, state.scrollY || 0);
+    scrollInstant(position.scrollX, position.scrollY);
     focusRouteHeading();
   });
 });
