@@ -1,4 +1,5 @@
 import './style.css';
+import './a11y.css';
 
 type CueId = 'laser' | 'outline' | 'pixel' | 'freeze' | 'zoom' | 'shake';
 type Mode = 'landing' | 'demo' | 'live' | 'privacy' | 'terms' | 'missing';
@@ -92,6 +93,13 @@ function render(next = routeForPath()) {
   app.innerHTML = next === 'landing' ? landing() : next === 'demo' ? instrument('demo') : next === 'live' ? instrument('live') : next === 'privacy' || next === 'terms' ? textPage(next) : missing();
   const titles: Record<Mode, string> = { landing: 'Camera FX Cues — Trigger camera effects with keys', demo: 'Demo — Camera FX Cues', live: 'Camera input — Camera FX Cues', privacy: 'Privacy — Camera FX Cues', terms: 'Terms — Camera FX Cues', missing: 'Signal lost — Camera FX Cues' };
   document.title = titles[next];
+  const descriptions: Record<Mode, string> = { landing: 'Trigger playful camera effects with clear keys. Built for game jams and classrooms.', demo: 'Try six camera cues in a local synthetic sample scene.', live: 'Use local camera input with six keyboard-triggered effects.', privacy: 'Camera FX Cues processes video in the current browser tab.', terms: 'Terms for using the local Camera FX Cues instrument.', missing: 'This Camera FX Cues page is not available.' };
+  document.querySelector<HTMLMetaElement>('meta[name="description"]')?.setAttribute('content', descriptions[next]);
+  document.querySelector<HTMLLinkElement>('link[rel="canonical"]')?.setAttribute('href', `https://camera-fx-cues.sociobot.in${next === 'landing' ? '/' : location.pathname}`);
+  document.querySelector<HTMLMetaElement>('meta[property="og:title"]')?.setAttribute('content', titles[next]);
+  document.querySelector<HTMLMetaElement>('meta[property="og:description"]')?.setAttribute('content', descriptions[next]);
+  document.querySelector<HTMLMetaElement>('meta[name="twitter:title"]')?.setAttribute('content', titles[next]);
+  document.querySelector<HTMLMetaElement>('meta[name="twitter:description"]')?.setAttribute('content', descriptions[next]);
   const h1 = document.querySelector<HTMLElement>('h1');
   document.querySelector('#route-status')!.textContent = h1?.textContent || 'Page loaded';
   if (h1) h1.tabIndex = -1;

@@ -19,5 +19,19 @@
     "where": "preset controls",
     "test": "npm test -- --grep @claim:preset-save",
     "sandbox": "fresh browser context at /demo; save a named preset and assert it reappears after reload"
+  },
+  {
+    "id": "keyboard-cues",
+    "claim": "Works with six number keys",
+    "where": "landing fact and demo controls",
+    "test": "npm test -- --grep @claim:keyboard-cues",
+    "sandbox": "fresh browser context at /demo; press keys 1 through 6 and assert each named cue"
+  },
+  {
+    "id": "no-account",
+    "claim": "Free. No account.",
+    "where": "landing fact",
+    "test": "npm test -- --grep @claim:no-account",
+    "sandbox": "fresh browser context at /; assert the product starts without a sign-in or account form"
   }
 ]

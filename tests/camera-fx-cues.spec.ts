@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import AxeBuilder from '@axe-core/playwright';
 
 test('@claim:sample-cues sample mode runs all six cues', async ({ page }) => {
   await page.goto('/demo');
@@ -18,6 +19,20 @@ test('@claim:local-video demo mode makes no cross-origin requests', async ({ pag
   await page.getByRole('button', { name: /Pixel burst/ }).click();
   await expect(page.locator('#cue-readout')).toHaveText('PIXEL BURST');
   expect(remote).toEqual([]);
+});
+
+test('@claim:keyboard-cues each number key runs its named cue', async ({ page }) => {
+  await page.goto('/demo');
+  for (const [key, cue] of [['1', 'LASER'], ['2', 'OUTLINE'], ['3', 'PIXEL BURST'], ['4', 'FREEZE'], ['5', 'ZOOM'], ['6', 'SHAKE']]) {
+    await page.keyboard.press(key);
+    await expect(page.locator('#cue-readout')).toHaveText(cue);
+  }
+});
+
+test('@claim:no-account landing starts without an account form', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('form')).toHaveCount(0);
+  await expect(page.getByRole('link', { name: 'Try it with sample data' })).toBeVisible();
 });
 
 test('@claim:preset-save demo presets persist separately after reload', async ({ page }) => {
@@ -41,4 +56,12 @@ test('landing, legal routes and mobile layout have core landmarks', async ({ pag
   await page.goto('/privacy');
   await expect(page).toHaveTitle('Privacy — Camera FX Cues');
   await expect(page.getByRole('heading', { name: 'Your camera stays on your device' })).toBeVisible();
+});
+
+test('landing and demo have no serious or critical accessibility violations', async ({ page }) => {
+  for (const path of ['/', '/demo']) {
+    await page.goto(path);
+    const scan = await new AxeBuilder({ page }).analyze();
+    expect(scan.violations.filter(item => ['serious', 'critical'].includes(item.impact || ''))).toEqual([]);
+  }
 });
