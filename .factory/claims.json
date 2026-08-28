@@ -1,10 +1,10 @@
 [
   {
     "id": "sample-cues",
-    "claim": "Try all six cues with the sample scene",
+    "claim": "Try all six cues with the sample signal",
     "where": "landing and demo cue grid",
     "test": "npm test -- --grep @claim:sample-cues",
-    "sandbox": "fresh browser context at /demo; activate every cue and assert its rendered canvas, overlay, or animation state"
+    "sandbox": "fresh browser context at /?demo=1; activate every cue and assert its rendered canvas, overlay, or animation state"
   },
   {
     "id": "local-video",
@@ -18,14 +18,14 @@
     "claim": "Save cue settings on this device",
     "where": "preset controls and README",
     "test": "npm test -- --grep @claim:preset-save",
-    "sandbox": "fresh browser context at /demo; save a named preset and assert the demo namespace and restored preset after reload"
+    "sandbox": "fresh browser context at /?demo=1; save a named preset and assert the demo namespace and restored preset after reload"
   },
   {
     "id": "keyboard-cues",
     "claim": "Works with six number keys",
     "where": "landing fact and demo controls",
     "test": "npm test -- --grep @claim:keyboard-cues",
-    "sandbox": "fresh browser context at /demo; press keys 1 through 6 and assert each rendered effect state"
+    "sandbox": "fresh browser context at /?demo=1; press keys 1 through 6 and assert each rendered effect state"
   },
   {
     "id": "keyboard-operation",
@@ -39,14 +39,14 @@
     "claim": "Reduced-motion settings remove zoom and shake movement",
     "where": "motion warning and design policy",
     "test": "npm test -- --grep @claim:reduced-motion",
-    "sandbox": "fresh browser context emulating prefers-reduced-motion: reduce; activate zoom and assert no animation"
+    "sandbox": "fresh browser context at /?demo=1 emulating prefers-reduced-motion: reduce; activate zoom and shake, then assert no animation or transform movement over time"
   },
   {
     "id": "no-account",
     "claim": "Starts without an account",
     "where": "landing fact and privacy page",
     "test": "npm test -- --grep @claim:no-account",
-    "sandbox": "fresh browser context at /; start the complete sample scene and trigger a cue without a sign-in, account, or payment form"
+    "sandbox": "fresh browser context at /; start the complete sample signal and trigger a cue without a sign-in, account, or payment form"
   },
   {
     "id": "demo-isolation",

@@ -16,3 +16,24 @@ footer p:last-child{gap:8px;align-items:center}
 footer a{min-width:44px;min-height:44px;padding:10px 0;display:inline-flex;align-items:center;justify-content:center}
 @media(max-width:760px){.site-header,footer{padding-block:12px}.site-header nav{gap:4px}.instrument-top .back-link{display:inline-flex}}
 .how,.privacy-note{content-visibility:visible}
+
+/* The demo opens as a working instrument on a phone, not as an introduction page. */
+@media(max-width:760px){
+  .mode-demo .demo-banner{margin:10px 0 12px;padding:8px 10px;gap:8px}
+  .mode-demo .demo-banner strong{width:100%;font-size:10px}
+  .mode-demo .demo-banner span{font-size:11px;line-height:1.3;flex:1 1 150px}
+  .mode-demo .instrument{padding-top:0}
+  .mode-demo .instrument-top{margin-bottom:8px}
+  .mode-demo .instrument-top .eyebrow{margin-bottom:5px;font-size:10px}
+  .mode-demo .instrument-top h1{font-size:1.65rem;max-width:none;margin-bottom:5px}
+  .mode-demo .instrument-help{font-size:12px;line-height:1.3}
+  .mode-demo .instrument-top .back-link{position:absolute;left:-9999px}
+  .mode-demo .instrument-warning{padding:7px 10px;margin-bottom:8px}
+  .mode-demo .instrument-warning h2{font-size:12px;margin-bottom:2px}
+  .mode-demo .instrument-warning p{font-size:11px;line-height:1.3}
+  .mode-demo .stage-shell{padding:5px}
+  .mode-demo .cue-panel{margin-top:16px;gap:0}
+  .mode-demo .cue-panel>div:first-child{display:none}
+  .mode-demo .cue{min-height:66px;padding:7px}
+  .mode-demo .cue small{display:none}
+}

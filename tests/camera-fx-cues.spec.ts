@@ -46,8 +46,8 @@ async function allowCamera(context: BrowserContext) {
 }
 
 test('@claim:sample-cues sample mode renders all six effects', async ({ page }) => {
-  await page.goto('/demo');
-  await expect(page.getByText('DEMO — SAMPLE DATA, REAL PRESETS STAY SEPARATE')).toBeVisible();
+  await page.goto('/?demo=1');
+  await expect(page.getByText('DEMO — SAMPLE SIGNAL, REAL PRESETS STAY SEPARATE')).toBeVisible();
   await page.getByRole('button', { name: /Laser/ }).click();
   await expect(page.locator('#stage')).toHaveClass(/is-laser/);
   await expect(page.locator('.laser-overlay')).toHaveCSS('opacity', '1');
@@ -57,10 +57,10 @@ test('@claim:sample-cues sample mode renders all six effects', async ({ page }) 
   await expect(page.locator('#stage')).toHaveClass(/is-outline/);
   await expect.poll(() => page.locator('#camera-canvas').evaluate((canvas: HTMLCanvasElement) => {
     const pixels = canvas.getContext('2d')!.getImageData(0, 0, canvas.width, canvas.height).data;
-    let transparent = 0;
-    for (let index = 3; index < pixels.length; index += 4) if (pixels[index] === 0) transparent++;
-    return transparent / (pixels.length / 4);
-  })).toBeGreaterThan(0.6);
+    let cyanEdges = 0;
+    for (let index = 0; index < pixels.length; index += 4) if (pixels[index] === 80 && pixels[index + 1] === 245 && pixels[index + 2] === 208) cyanEdges++;
+    return cyanEdges;
+  })).toBeGreaterThan(1000);
   await page.getByRole('button', { name: /Pixel burst/ }).click();
   await expect(page.locator('#stage')).toHaveClass(/is-pixel/);
   await expect.poll(() => page.locator('#camera-canvas').evaluate((canvas: HTMLCanvasElement) => {
@@ -100,18 +100,18 @@ test('@claim:local-video camera stays local and its track stops on exit', async 
 });
 
 test('@claim:preset-save demo presets use their namespace and survive reload', async ({ page }) => {
-  await page.goto('/demo');
-  await page.getByRole('button', { name: /Outline/ }).click();
+  await page.goto('/?demo=1');
+  await page.getByRole('button', { name: /Laser/ }).click();
   await page.getByLabel('Preset name').fill('Boss intro');
   await page.getByRole('button', { name: 'Save preset' }).click();
   await expect(page.getByText('Saved Boss intro on this device.')).toBeVisible();
   expect(await page.evaluate(() => localStorage.getItem('demo:camera-fx-cues:presets'))).toContain('Boss intro');
   await page.reload();
-  await expect(page.getByRole('button', { name: 'Boss intro Outline' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Boss intro Laser' })).toBeVisible();
 });
 
 test('@claim:keyboard-cues number keys activate rendered cue states', async ({ page }) => {
-  await page.goto('/demo');
+  await page.goto('/?demo=1');
   for (const [key, id] of [['1', 'laser'], ['2', 'outline'], ['3', 'pixel'], ['4', 'freeze'], ['5', 'zoom'], ['6', 'shake']]) {
     await page.keyboard.press(key);
     await expect(page.locator('#stage')).toHaveClass(new RegExp(`is-${id}`));
@@ -122,15 +122,15 @@ test('@claim:keyboard-cues number keys activate rendered cue states', async ({ p
 test('@claim:no-account sample instrument starts without sign-in or payment', async ({ page }) => {
   await page.goto('/');
   await page.getByRole('link', { name: 'Try it with sample data' }).click();
-  await expect(page.locator('#source-readout')).toHaveText('SAMPLE SIGNAL');
-  await page.getByRole('button', { name: /Outline/ }).click();
-  await expect(page.locator('#stage')).toHaveClass(/is-outline/);
+  await expect(page.locator('#source-readout')).toHaveText('JAM DESK // SAMPLE SIGNAL');
+  await page.getByRole('button', { name: /Laser/ }).click();
+  await expect(page.locator('#stage')).toHaveClass(/is-laser/);
   await expect(page.locator('input[type="email"], input[type="password"], [href*="login"], [href*="checkout"]')).toHaveCount(0);
 });
 
 test('@claim:demo-isolation reset and real start remove only demo presets', async ({ page }) => {
   await page.addInitScript(() => localStorage.setItem('camera-fx-cues:presets', '[{"name":"Real setup","cue":"laser"}]'));
-  await page.goto('/demo');
+  await page.goto('/?demo=1');
   await expect(page.getByText('Real setup')).toHaveCount(0);
   const saveDemo = async (name: string) => {
     await page.getByLabel('Preset name').fill(name);
@@ -184,7 +184,7 @@ test('@claim:keyboard-operation Tab order, Enter, Escape, and route focus work',
 
 test('all visible controls meet 44 by 44 CSS pixel touch targets at 390px', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  for (const path of ['/', '/demo']) {
+  for (const path of ['/', '/?demo=1', '/404.html']) {
     await page.goto(path);
     const small = await page.locator('a, button, input').evaluateAll(elements => elements.flatMap(element => {
       const rect = element.getBoundingClientRect();
@@ -214,6 +214,32 @@ test('@claim:reduced-motion warning is present and reduced motion removes moveme
   await expect(page.getByRole('heading', { name: 'Motion and light warning' })).toBeVisible();
   await page.getByRole('button', { name: /Zoom/ }).click();
   await expect(page.locator('#stage')).toHaveCSS('animation-name', 'none');
+  const zoomTransform = await page.locator('#stage').evaluate(element => getComputedStyle(element).transform);
+  await page.waitForTimeout(180);
+  expect(await page.locator('#stage').evaluate(element => getComputedStyle(element).transform)).toBe(zoomTransform);
+  await page.getByRole('button', { name: /Shake/ }).click();
+  await expect(page.locator('#stage')).toHaveCSS('animation-name', 'none');
+  const shakeTransform = await page.locator('#stage').evaluate(element => getComputedStyle(element).transform);
+  await page.waitForTimeout(220);
+  expect(await page.locator('#stage').evaluate(element => getComputedStyle(element).transform)).toBe(shakeTransform);
+});
+
+test('one-click query demo opens an active sample above the mobile fold', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+  await page.getByRole('link', { name: 'Try it with sample data' }).click();
+  await expect(page).toHaveURL(/\?demo=1$/);
+  await expect(page).toHaveTitle('Demo — Camera FX Cues');
+  await expect(page.getByText('DEMO — SAMPLE SIGNAL, REAL PRESETS STAY SEPARATE')).toBeVisible();
+  await expect(page.locator('#camera-canvas')).toHaveAttribute('aria-label', /Game-jam desk sample signal/);
+  await expect(page.locator('#stage')).toHaveClass(/is-outline/);
+  await expect(page.locator('[data-cue="outline"]')).toHaveAttribute('aria-pressed', 'true');
+  const fold = await page.locator('#stage, [data-cue="outline"]').evaluateAll(elements => elements.map(element => element.getBoundingClientRect().bottom));
+  expect(Math.max(...fold)).toBeLessThanOrEqual(844);
+  await expect(page.getByRole('button', { name: 'Reset demo' })).toBeVisible();
+  await page.getByRole('button', { name: 'Reset demo' }).click();
+  await expect(page.locator('#stage')).toHaveClass(/is-outline/);
+  await expect(page.locator('#cue-readout')).toHaveText('OUTLINE');
 });
 
 test('bounded effects return to ready and clear pressed state', async ({ page }) => {
@@ -229,7 +255,7 @@ test('bounded effects return to ready and clear pressed state', async ({ page })
 });
 
 test('complete shell reloads offline after one visit', async ({ context, page }) => {
-  await page.goto('/demo');
+  await page.goto('/?demo=1');
   await page.evaluate(async () => {
     await navigator.serviceWorker.ready;
     if (!navigator.serviceWorker.controller) await new Promise<void>(resolve => navigator.serviceWorker.addEventListener('controllerchange', () => resolve(), { once: true }));
@@ -247,7 +273,7 @@ test('complete shell reloads offline after one visit', async ({ context, page })
   await page.waitForTimeout(250);
   expect(failures).toEqual([]);
   await expect(page.getByRole('heading', { name: 'Try all six camera cues' })).toBeVisible();
-  await expect(page.getByText('DEMO — SAMPLE DATA, REAL PRESETS STAY SEPARATE')).toBeVisible();
+  await expect(page.getByText('DEMO — SAMPLE SIGNAL, REAL PRESETS STAY SEPARATE')).toBeVisible();
   await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(8, 10, 24)');
   await context.setOffline(false);
 });
@@ -262,7 +288,46 @@ test('SWA missing routes use a true 404 and the 404 page obeys CSP', async ({ pa
   await expect(page).toHaveTitle('Signal lost — Camera FX Cues');
   await expect(page.locator('style')).toHaveCount(0);
   await expect(page.locator('link[rel="stylesheet"]')).toHaveAttribute('href', '/404.css');
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /not available/);
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://camera-fx-cues.sociobot.in/404.html');
+  await expect(page.locator('link[rel="icon"]')).toHaveAttribute('href', '/favicon.svg');
+  await expect(page.locator('link[rel="apple-touch-icon"]')).toHaveAttribute('sizes', '180x180');
+  await expect(page.locator('link[rel="apple-touch-icon"]')).toHaveAttribute('href', '/apple-touch-icon.png');
+  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', /og-camera-fx-cues\.webp$/);
+  await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute('content', 'summary_large_image');
+  await expect(page.getByRole('link', { name: 'Privacy' })).toHaveAttribute('href', '/privacy');
+  await expect(page.getByRole('link', { name: 'Terms' })).toHaveAttribute('href', '/terms');
+  await expect(page.getByText('Built by Param Factory · v1.0.0')).toBeVisible();
   await expect(page.locator('main')).toHaveCSS('background-color', 'rgb(20, 25, 54)');
+});
+
+test('routes set titles, metadata, focus, history, and legal links', async ({ page }) => {
+  await page.goto('/');
+  const routes = [
+    { link: 'Demo', title: 'Demo — Camera FX Cues', path: '/demo' },
+    { link: 'Privacy', title: 'Privacy — Camera FX Cues', path: '/privacy' },
+    { link: 'Terms', title: 'Terms — Camera FX Cues', path: '/terms' }
+  ];
+  for (const route of routes) {
+    await page.goto('/');
+    await page.getByRole('link', { name: route.link, exact: true }).first().click();
+    await expect(page).toHaveURL(new RegExp(`${route.path}$`));
+    await expect(page).toHaveTitle(route.title);
+    await expect(page.locator('h1')).toBeFocused();
+    await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /.+/);
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `https://camera-fx-cues.sociobot.in${route.path}`);
+    await expect(page.locator('meta[property="og:title"]')).toHaveAttribute('content', route.title);
+    await expect(page.locator('meta[property="og:description"]')).toHaveAttribute('content', /.+/);
+    await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', /og-camera-fx-cues\.webp$/);
+    await expect(page.locator('meta[name="twitter:title"]')).toHaveAttribute('content', route.title);
+    await expect(page.locator('meta[name="twitter:description"]')).toHaveAttribute('content', /.+/);
+    await expect(page.locator('meta[name="twitter:image"]')).toHaveAttribute('content', /og-camera-fx-cues\.webp$/);
+    await expect(page.getByRole('link', { name: 'Privacy', exact: true }).last()).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Terms', exact: true }).last()).toBeVisible();
+  }
+  await page.goBack();
+  await expect(page).toHaveURL('/');
+  await expect(page.locator('h1')).toBeFocused();
 });
 
 test('principal routes have clean semantics, accessibility, and console', async ({ page }) => {
