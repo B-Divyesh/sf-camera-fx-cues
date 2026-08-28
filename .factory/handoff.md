@@ -1,4 +1,21 @@
-# Camera FX Cues release repair handoff
+# Camera FX Cues verification handoff — PASS
+
+## Independent verification 2 (2026-08-28)
+
+**PASS** for candidate `6e5d726ea9c0f62c0546261d860cfc79a774aaaa` at `https://camera-fx-cues.sociobot.in`.
+
+The clean install, all nine registered claim commands, full 15-test suite, TypeScript check, and production build passed. Independent live testing confirmed first-read/demo access, camera privacy and denial recovery, effects/keyboard/presets, mobile and reduced-motion behavior, offline service-worker reload, zero serious/critical Axe findings, clean console, security/caching headers, true 404s, artifact identity, and Lighthouse 100/100/100/100. No defects or known gaps remain. See `.factory/verification-2.md` for exact evidence and commands.
+
+How to reproduce:
+
+```sh
+npm ci
+npm test
+npm run lint
+npm run build
+```
+
+# Earlier release repair handoff
 
 ## Result
 
