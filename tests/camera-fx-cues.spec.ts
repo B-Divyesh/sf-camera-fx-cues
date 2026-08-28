@@ -247,6 +247,7 @@ test('SWA missing routes use a true 404 and the 404 page obeys CSP', async ({ pa
   expect(config.navigationFallback).toBeUndefined();
   expect(config.responseOverrides['404']).toEqual({ rewrite: '/404.html', statusCode: 404 });
   expect(config.routes.every((route: { rewrite?: string; statusCode?: number }) => !(route.rewrite && route.statusCode))).toBe(true);
+  expect(config.routes).toContainEqual({ route: '/404.html', statusCode: 404 });
   await page.goto('/404.html');
   await expect(page).toHaveTitle('Signal lost — Camera FX Cues');
   await expect(page.locator('style')).toHaveCount(0);

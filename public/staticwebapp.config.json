@@ -1,5 +1,6 @@
 {
   "routes": [
+    { "route": "/404.html", "statusCode": 404 },
     { "route": "/demo", "rewrite": "/index.html" },
     { "route": "/camera", "rewrite": "/index.html" },
     { "route": "/privacy", "rewrite": "/index.html" },
