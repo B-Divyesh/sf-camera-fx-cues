@@ -1,1 +1,1 @@
-Trigger six camera effects with number keys on your camera or an isolated sample signal.
+Trigger six camera effects with number keys on your camera or the isolated sample signal.

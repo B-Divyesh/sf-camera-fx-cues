@@ -432,6 +432,20 @@ test('every application route has its own title, metadata, landmark, and legal f
   }
 });
 
+test('every visible same-page fragment link resolves to an element on its route', async ({ page }) => {
+  for (const path of ['/', '/?demo=1', '/demo', '/camera', '/privacy', '/terms', '/missing-test-route', '/404.html']) {
+    await page.goto(path);
+    const unresolved = await page.locator('a[href^="#"]').evaluateAll(links => links.flatMap(link => {
+      const style = getComputedStyle(link);
+      const href = link.getAttribute('href') || '';
+      const id = decodeURIComponent(href.slice(1));
+      const visible = style.display !== 'none' && style.visibility !== 'hidden' && link.getBoundingClientRect().width > 0 && link.getBoundingClientRect().height > 0;
+      return visible && !document.getElementById(id) ? [{ href, text: link.textContent?.trim() }] : [];
+    }));
+    expect(unresolved, `unresolved fragment links on ${path}`).toEqual([]);
+  }
+});
+
 test('principal routes have clean semantics, accessibility, and console', async ({ page }) => {
   const errors: string[] = [];
   page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });

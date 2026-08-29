@@ -43,9 +43,10 @@ const routeForPath = (): Mode => {
 const storageKey = (key: string) => `${mode === 'demo' ? 'demo:' : ''}camera-fx-cues:${key}`;
 
 function template(body: string, current: Mode) {
+  const howItWorksLink = current === 'landing' ? '<a href="#how">How it works</a>' : '';
   return `
     <header class="site-header"><a class="wordmark" href="/" data-route aria-label="Camera FX Cues home"><span aria-hidden="true">▣</span> CAMERA FX CUES</a>
-      <nav aria-label="Primary"><a href="/demo" data-route${current === 'demo' ? ' aria-current="page"' : ''}>Demo</a><a href="#how" ${current !== 'landing' ? 'hidden' : ''}>How it works</a><a href="/privacy" data-route${current === 'privacy' ? ' aria-current="page"' : ''}>Privacy</a></nav>
+      <nav aria-label="Primary"><a href="/demo" data-route${current === 'demo' ? ' aria-current="page"' : ''}>Demo</a>${howItWorksLink}<a href="/privacy" data-route${current === 'privacy' ? ' aria-current="page"' : ''}>Privacy</a></nav>
     </header>
     <p id="offline-notice" class="offline-notice" hidden role="status">Offline. Reconnect before starting a camera.</p>
     <main id="main" class="mode-${current}" tabindex="-1">${body}</main>
