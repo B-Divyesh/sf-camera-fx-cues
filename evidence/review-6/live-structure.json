@@ -1,0 +1,603 @@
+{
+  "routes": {
+    "/": {
+      "status": 200,
+      "lang": "en",
+      "title": "Camera FX Cues — Trigger camera effects with keys",
+      "h1": [
+        "Trigger camera effects with keys"
+      ],
+      "mains": 1,
+      "description": "Trigger six camera effects with number keys. Built for game jams and classrooms.",
+      "canonical": "https://camera-fx-cues.sociobot.in/",
+      "ogTitle": "Camera FX Cues — Trigger camera effects with keys",
+      "ogDescription": "Trigger six camera effects with number keys. Built for game jams and classrooms.",
+      "ogImage": "https://camera-fx-cues.sociobot.in/assets/og-camera-fx-cues.webp",
+      "twitterCard": "summary_large_image",
+      "icon": "https://camera-fx-cues.sociobot.in/favicon.svg",
+      "touch": "https://camera-fx-cues.sociobot.in/apple-touch-icon.png",
+      "header": [
+        {
+          "text": "▣ CAMERA FX CUES",
+          "href": "/"
+        },
+        {
+          "text": "Demo",
+          "href": "/demo"
+        },
+        {
+          "text": "How it works",
+          "href": "#how"
+        },
+        {
+          "text": "Privacy",
+          "href": "/privacy"
+        }
+      ],
+      "footer": [
+        "Playful camera cues for small teams.\n\nPrivacy\nTerms\nBuilt by Param Factory · v1.0.0"
+      ],
+      "links": [
+        {
+          "text": "Skip to controls",
+          "href": "#main"
+        },
+        {
+          "text": "▣ CAMERA FX CUES",
+          "href": "/"
+        },
+        {
+          "text": "Demo",
+          "href": "/demo"
+        },
+        {
+          "text": "How it works",
+          "href": "#how"
+        },
+        {
+          "text": "Privacy",
+          "href": "/privacy"
+        },
+        {
+          "text": "Try it with sample data",
+          "href": "/?demo=1"
+        },
+        {
+          "text": "Privacy",
+          "href": "/privacy"
+        },
+        {
+          "text": "Terms",
+          "href": "/terms"
+        }
+      ],
+      "badFragments": [],
+      "errors": []
+    },
+    "/?demo=1": {
+      "status": 200,
+      "lang": "en",
+      "title": "Demo — Camera FX Cues",
+      "h1": [
+        "Try all six camera cues"
+      ],
+      "mains": 1,
+      "description": "Try six camera cues on a game-jam desk sample signal.",
+      "canonical": "https://camera-fx-cues.sociobot.in/demo",
+      "ogTitle": "Demo — Camera FX Cues",
+      "ogDescription": "Try six camera cues on a game-jam desk sample signal.",
+      "ogImage": "https://camera-fx-cues.sociobot.in/assets/og-camera-fx-cues.webp",
+      "twitterCard": "summary_large_image",
+      "icon": "https://camera-fx-cues.sociobot.in/favicon.svg",
+      "touch": "https://camera-fx-cues.sociobot.in/apple-touch-icon.png",
+      "header": [
+        {
+          "text": "▣ CAMERA FX CUES",
+          "href": "/"
+        },
+        {
+          "text": "Demo",
+          "href": "/demo"
+        },
+        {
+          "text": "Privacy",
+          "href": "/privacy"
+        }
+      ],
+      "footer": [
+        "Playful camera cues for small teams.\n\nPrivacy\nTerms\nBuilt by Param Factory · v1.0.0"
+      ],
+      "links": [
+        {
+          "text": "Skip to controls",
+          "href": "#main"
+        },
+        {
+          "text": "▣ CAMERA FX CUES",
+          "href": "/"
+        },
+        {
+          "text": "Demo",
+          "href": "/demo"
+        },
+        {
+          "text": "Privacy",
+          "href": "/privacy"
+        },
+        {
+          "text": "← Back to start",
+          "href": "/"
+        },
+        {
+          "text": "Privacy",
+          "href": "/privacy"
+        },
+        {
+          "text": "Terms",
+          "href": "/terms"
+        }
+      ],
+      "badFragments": [],
+      "errors": []
+    },
+    "/demo": {
+      "status": 200,
+      "lang": "en",
+      "title": "Demo — Camera FX Cues",
+      "h1": [
+        "Try all six camera cues"
+      ],
+      "mains": 1,
+      "description": "Try six camera cues on a game-jam desk sample signal.",
+      "canonical": "https://camera-fx-cues.sociobot.in/demo",
+      "ogTitle": "Demo — Camera FX Cues",
+      "ogDescription": "Try six camera cues on a game-jam desk sample signal.",
+      "ogImage": "https://camera-fx-cues.sociobot.in/assets/og-camera-fx-cues.webp",
+      "twitterCard": "summary_large_image",
+      "icon": "https://camera-fx-cues.sociobot.in/favicon.svg",
+      "touch": "https://camera-fx-cues.sociobot.in/apple-touch-icon.png",
+      "header": [
+        {
+          "text": "▣ CAMERA FX CUES",
+          "href": "/"
+        },
+        {
+          "text": "Demo",
+          "href": "/demo"
+        },
+        {
+          "text": "Privacy",
+          "href": "/privacy"
+        }
+      ],
+      "footer": [
+        "Playful camera cues for small teams.\n\nPrivacy\nTerms\nBuilt by Param Factory · v1.0.0"
+      ],
+      "links": [
+        {
+          "text": "Skip to controls",
+          "href": "#main"
+        },
+        {
+          "text": "▣ CAMERA FX CUES",
+          "href": "/"
+        },
+        {
+          "text": "Demo",
+          "href": "/demo"
+        },
+        {
+          "text": "Privacy",
+          "href": "/privacy"
+        },
+        {
+          "text": "← Back to start",
+          "href": "/"
+        },
+        {
+          "text": "Privacy",
+          "href": "/privacy"
+        },
+        {
+          "text": "Terms",
+          "href": "/terms"
+        }
+      ],
+      "badFragments": [],
+      "errors": []
+    },
+    "/camera": {
+      "status": 200,
+      "lang": "en",
+      "title": "Camera input — Camera FX Cues",
+      "h1": [
+        "Control your camera effects"
+      ],
+      "mains": 1,
+      "description": "Use local camera input with six keyboard-triggered effects.",
+      "canonical": "https://camera-fx-cues.sociobot.in/camera",
+      "ogTitle": "Camera input — Camera FX Cues",
+      "ogDescription": "Use local camera input with six keyboard-triggered effects.",
+      "ogImage": "https://camera-fx-cues.sociobot.in/assets/og-camera-fx-cues.webp",
+      "twitterCard": "summary_large_image",
+      "icon": "https://camera-fx-cues.sociobot.in/favicon.svg",
+      "touch": "https://camera-fx-cues.sociobot.in/apple-touch-icon.png",
+      "header": [
+        {
+          "text": "▣ CAMERA FX CUES",
+          "href": "/"
+        },
+        {
+          "text": "Demo",
+          "href": "/demo"
+        },
+        {
+          "text": "Privacy",
+          "href": "/privacy"
+        }
+      ],
+      "footer": [
+        "Playful camera cues for small teams.\n\nPrivacy\nTerms\nBuilt by Param Factory · v1.0.0"
+      ],
+      "links": [
+        {
+          "text": "Skip to controls",
+          "href": "#main"
+        },
+        {
+          "text": "▣ CAMERA FX CUES",
+          "href": "/"
+        },
+        {
+          "text": "Demo",
+          "href": "/demo"
+        },
+        {
+          "text": "Privacy",
+          "href": "/privacy"
+        },
+        {
+          "text": "← Back to start",
+          "href": "/"
+        },
+        {
+          "text": "Privacy",
+          "href": "/privacy"
+        },
+        {
+          "text": "Terms",
+          "href": "/terms"
+        }
+      ],
+      "badFragments": [],
+      "errors": []
+    },
+    "/privacy": {
+      "status": 200,
+      "lang": "en",
+      "title": "Privacy — Camera FX Cues",
+      "h1": [
+        "Your camera stays on your device"
+      ],
+      "mains": 1,
+      "description": "Camera FX Cues processes video in the current browser tab.",
+      "canonical": "https://camera-fx-cues.sociobot.in/privacy",
+      "ogTitle": "Privacy — Camera FX Cues",
+      "ogDescription": "Camera FX Cues processes video in the current browser tab.",
+      "ogImage": "https://camera-fx-cues.sociobot.in/assets/og-camera-fx-cues.webp",
+      "twitterCard": "summary_large_image",
+      "icon": "https://camera-fx-cues.sociobot.in/favicon.svg",
+      "touch": "https://camera-fx-cues.sociobot.in/apple-touch-icon.png",
+      "header": [
+        {
+          "text": "▣ CAMERA FX CUES",
+          "href": "/"
+        },
+        {
+          "text": "Demo",
+          "href": "/demo"
+        },
+        {
+          "text": "Privacy",
+          "href": "/privacy"
+        }
+      ],
+      "footer": [
+        "Playful camera cues for small teams.\n\nPrivacy\nTerms\nBuilt by Param Factory · v1.0.0"
+      ],
+      "links": [
+        {
+          "text": "Skip to controls",
+          "href": "#main"
+        },
+        {
+          "text": "▣ CAMERA FX CUES",
+          "href": "/"
+        },
+        {
+          "text": "Demo",
+          "href": "/demo"
+        },
+        {
+          "text": "Privacy",
+          "href": "/privacy"
+        },
+        {
+          "text": "Privacy",
+          "href": "/privacy"
+        },
+        {
+          "text": "Terms",
+          "href": "/terms"
+        }
+      ],
+      "badFragments": [],
+      "errors": []
+    },
+    "/terms": {
+      "status": 200,
+      "lang": "en",
+      "title": "Terms — Camera FX Cues",
+      "h1": [
+        "Use this cue tool safely"
+      ],
+      "mains": 1,
+      "description": "Terms for using Camera FX Cues safely.",
+      "canonical": "https://camera-fx-cues.sociobot.in/terms",
+      "ogTitle": "Terms — Camera FX Cues",
+      "ogDescription": "Terms for using Camera FX Cues safely.",
+      "ogImage": "https://camera-fx-cues.sociobot.in/assets/og-camera-fx-cues.webp",
+      "twitterCard": "summary_large_image",
+      "icon": "https://camera-fx-cues.sociobot.in/favicon.svg",
+      "touch": "https://camera-fx-cues.sociobot.in/apple-touch-icon.png",
+      "header": [
+        {
+          "text": "▣ CAMERA FX CUES",
+          "href": "/"
+        },
+        {
+          "text": "Demo",
+          "href": "/demo"
+        },
+        {
+          "text": "Privacy",
+          "href": "/privacy"
+        }
+      ],
+      "footer": [
+        "Playful camera cues for small teams.\n\nPrivacy\nTerms\nBuilt by Param Factory · v1.0.0"
+      ],
+      "links": [
+        {
+          "text": "Skip to controls",
+          "href": "#main"
+        },
+        {
+          "text": "▣ CAMERA FX CUES",
+          "href": "/"
+        },
+        {
+          "text": "Demo",
+          "href": "/demo"
+        },
+        {
+          "text": "Privacy",
+          "href": "/privacy"
+        },
+        {
+          "text": "Privacy",
+          "href": "/privacy"
+        },
+        {
+          "text": "Terms",
+          "href": "/terms"
+        }
+      ],
+      "badFragments": [],
+      "errors": []
+    },
+    "/404.html": {
+      "status": 404,
+      "lang": "en",
+      "title": "Page not found — Camera FX Cues",
+      "h1": [
+        "This cue page is not here"
+      ],
+      "mains": 1,
+      "description": "This Camera FX Cues page is not available. Return to the camera effects control room.",
+      "canonical": "https://camera-fx-cues.sociobot.in/404.html",
+      "ogTitle": "Page not found — Camera FX Cues",
+      "ogDescription": "This Camera FX Cues page is not available.",
+      "ogImage": "https://camera-fx-cues.sociobot.in/assets/og-camera-fx-cues.webp",
+      "twitterCard": "summary_large_image",
+      "icon": "https://camera-fx-cues.sociobot.in/favicon.svg",
+      "touch": "https://camera-fx-cues.sociobot.in/apple-touch-icon.png",
+      "header": [
+        {
+          "text": "▣ CAMERA FX CUES",
+          "href": "/"
+        },
+        {
+          "text": "Demo",
+          "href": "/demo"
+        },
+        {
+          "text": "Privacy",
+          "href": "/privacy"
+        }
+      ],
+      "footer": [
+        "Playful camera cues for small teams.\n\nPrivacy\nTerms\nBuilt by Param Factory · v1.0.0"
+      ],
+      "links": [
+        {
+          "text": "Skip to message",
+          "href": "#main"
+        },
+        {
+          "text": "▣ CAMERA FX CUES",
+          "href": "/"
+        },
+        {
+          "text": "Demo",
+          "href": "/demo"
+        },
+        {
+          "text": "Privacy",
+          "href": "/privacy"
+        },
+        {
+          "text": "Open Camera FX Cues",
+          "href": "/"
+        },
+        {
+          "text": "Privacy",
+          "href": "/privacy"
+        },
+        {
+          "text": "Terms",
+          "href": "/terms"
+        }
+      ],
+      "badFragments": [],
+      "errors": [
+        "Failed to load resource: the server responded with a status of 404 ()"
+      ]
+    },
+    "/definitely-missing-review-6": {
+      "status": 404,
+      "lang": "en",
+      "title": "Page not found — Camera FX Cues",
+      "h1": [
+        "This cue page is not here"
+      ],
+      "mains": 1,
+      "description": "This Camera FX Cues page is not available. Return to the camera effects control room.",
+      "canonical": "https://camera-fx-cues.sociobot.in/404.html",
+      "ogTitle": "Page not found — Camera FX Cues",
+      "ogDescription": "This Camera FX Cues page is not available.",
+      "ogImage": "https://camera-fx-cues.sociobot.in/assets/og-camera-fx-cues.webp",
+      "twitterCard": "summary_large_image",
+      "icon": "https://camera-fx-cues.sociobot.in/favicon.svg",
+      "touch": "https://camera-fx-cues.sociobot.in/apple-touch-icon.png",
+      "header": [
+        {
+          "text": "▣ CAMERA FX CUES",
+          "href": "/"
+        },
+        {
+          "text": "Demo",
+          "href": "/demo"
+        },
+        {
+          "text": "Privacy",
+          "href": "/privacy"
+        }
+      ],
+      "footer": [
+        "Playful camera cues for small teams.\n\nPrivacy\nTerms\nBuilt by Param Factory · v1.0.0"
+      ],
+      "links": [
+        {
+          "text": "Skip to message",
+          "href": "#main"
+        },
+        {
+          "text": "▣ CAMERA FX CUES",
+          "href": "/"
+        },
+        {
+          "text": "Demo",
+          "href": "/demo"
+        },
+        {
+          "text": "Privacy",
+          "href": "/privacy"
+        },
+        {
+          "text": "Open Camera FX Cues",
+          "href": "/"
+        },
+        {
+          "text": "Privacy",
+          "href": "/privacy"
+        },
+        {
+          "text": "Terms",
+          "href": "/terms"
+        }
+      ],
+      "badFragments": [],
+      "errors": [
+        "Failed to load resource: the server responded with a status of 404 ()"
+      ]
+    }
+  },
+  "crawl": [
+    {
+      "href": "https://camera-fx-cues.sociobot.in/#main",
+      "status": "fragment",
+      "exists": true
+    },
+    {
+      "href": "https://camera-fx-cues.sociobot.in/",
+      "status": 200
+    },
+    {
+      "href": "https://camera-fx-cues.sociobot.in/demo",
+      "status": 200
+    },
+    {
+      "href": "https://camera-fx-cues.sociobot.in/#how",
+      "status": "fragment",
+      "exists": true
+    },
+    {
+      "href": "https://camera-fx-cues.sociobot.in/privacy",
+      "status": 200
+    },
+    {
+      "href": "https://camera-fx-cues.sociobot.in/?demo=1",
+      "status": 200
+    },
+    {
+      "href": "https://camera-fx-cues.sociobot.in/terms",
+      "status": 200
+    },
+    {
+      "href": "https://camera-fx-cues.sociobot.in/?demo=1#main",
+      "status": "fragment",
+      "exists": true
+    },
+    {
+      "href": "https://camera-fx-cues.sociobot.in/demo#main",
+      "status": "fragment",
+      "exists": true
+    },
+    {
+      "href": "https://camera-fx-cues.sociobot.in/camera#main",
+      "status": "fragment",
+      "exists": true
+    },
+    {
+      "href": "https://camera-fx-cues.sociobot.in/privacy#main",
+      "status": "fragment",
+      "exists": true
+    },
+    {
+      "href": "https://camera-fx-cues.sociobot.in/terms#main",
+      "status": "fragment",
+      "exists": true
+    },
+    {
+      "href": "https://camera-fx-cues.sociobot.in/404.html#main",
+      "status": "fragment",
+      "exists": true
+    },
+    {
+      "href": "https://camera-fx-cues.sociobot.in/definitely-missing-review-6#main",
+      "status": "fragment",
+      "exists": true
+    }
+  ]
+}

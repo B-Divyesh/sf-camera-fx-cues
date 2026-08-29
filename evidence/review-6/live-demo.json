@@ -1,0 +1,64 @@
+{
+  "initial": {
+    "url": "https://camera-fx-cues.sociobot.in/?demo=1",
+    "title": "Demo — Camera FX Cues",
+    "banner": "DEMO — SAMPLE SIGNAL, REAL PRESETS STAY SEPARATE\nDemo presets remain only until you reset or start for real.\nReset demo\nStart for real",
+    "h1": "Try all six camera cues",
+    "readout": "OUTLINE",
+    "stageClass": "stage is-outline",
+    "outlinePressed": "true",
+    "canvasLabel": "Game-jam desk sample signal with an active outline cue",
+    "stageBox": {
+      "x": 25,
+      "y": 404.6875,
+      "width": 340,
+      "height": 191.25
+    },
+    "outlineBox": {
+      "x": 201,
+      "y": 618.9375,
+      "width": 171,
+      "height": 66
+    },
+    "realVisible": 0
+  },
+  "afterSave": {
+    "demo:camera-fx-cues:presets": "[{\"name\":\"Demo temporary\",\"cue\":\"outline\"}]",
+    "camera-fx-cues:presets": "[{\"name\":\"Real sentinel\",\"cue\":\"laser\"}]"
+  },
+  "afterReset": {
+    "storage": {
+      "camera-fx-cues:presets": "[{\"name\":\"Real sentinel\",\"cue\":\"laser\"}]"
+    },
+    "readout": "OUTLINE",
+    "stageClass": "stage is-outline",
+    "feedback": "Demo reset. The sample signal and outline cue are ready."
+  },
+  "afterReal": {
+    "url": "https://camera-fx-cues.sociobot.in/camera",
+    "storage": {
+      "camera-fx-cues:presets": "[{\"name\":\"Real sentinel\",\"cue\":\"laser\"}]"
+    }
+  },
+  "requests": [
+    {
+      "url": "https://camera-fx-cues.sociobot.in/",
+      "method": "GET"
+    },
+    {
+      "url": "https://camera-fx-cues.sociobot.in/assets/index-BBzNUxW-.js",
+      "method": "GET"
+    },
+    {
+      "url": "https://camera-fx-cues.sociobot.in/assets/index-CgRlStkP.css",
+      "method": "GET"
+    },
+    {
+      "url": "https://camera-fx-cues.sociobot.in/assets/demoscene-hero.webp",
+      "method": "GET"
+    }
+  ],
+  "crossOrigin": [],
+  "nonGet": [],
+  "errors": []
+}

@@ -1,0 +1,254 @@
+{
+  "mobile": {
+    "status": 200,
+    "url": "https://camera-fx-cues.sociobot.in/",
+    "visible": [
+      {
+        "tag": "SPAN",
+        "text": "▣",
+        "top": 24
+      },
+      {
+        "tag": "A",
+        "text": "Demo",
+        "top": 12
+      },
+      {
+        "tag": "A",
+        "text": "How it works",
+        "top": 12
+      },
+      {
+        "tag": "A",
+        "text": "Privacy",
+        "top": 60
+      },
+      {
+        "tag": "P",
+        "text": "LOCAL CAMERA EFFECTS // NO ACCOUNT",
+        "top": 279
+      },
+      {
+        "tag": "H1",
+        "text": "Trigger camera effects with keys",
+        "top": 303
+      },
+      {
+        "tag": "P",
+        "text": "For game-jam and classroom teams who need playful camera cues without sending video away.",
+        "top": 457
+      },
+      {
+        "tag": "A",
+        "text": "Try it with sample data",
+        "top": 538
+      },
+      {
+        "tag": "SPAN",
+        "text": "Opens the sample signal. Your real presets stay untouched.",
+        "top": 591
+      },
+      {
+        "tag": "SPAN",
+        "text": "01",
+        "top": 637
+      },
+      {
+        "tag": "SPAN",
+        "text": "02",
+        "top": 656
+      },
+      {
+        "tag": "SPAN",
+        "text": "03",
+        "top": 675
+      },
+      {
+        "tag": "FIGCAPTION",
+        "text": "ORIGINAL CAMERA ART // MADE FOR THIS TOOL",
+        "top": 235
+      },
+      {
+        "tag": "P",
+        "text": "BEFORE YOU START",
+        "top": 779
+      },
+      {
+        "tag": "H2",
+        "text": "Choose a camera or sample signal",
+        "top": 795
+      }
+    ],
+    "meta": {
+      "title": "Camera FX Cues — Trigger camera effects with keys",
+      "h1": [
+        "Trigger camera effects with keys"
+      ],
+      "description": "Trigger six camera effects with number keys. Built for game jams and classrooms.",
+      "canonical": "https://camera-fx-cues.sociobot.in/",
+      "ogTitle": "Camera FX Cues — Trigger camera effects with keys",
+      "hrefs": [
+        {
+          "text": "Skip to controls",
+          "href": "https://camera-fx-cues.sociobot.in/#main"
+        },
+        {
+          "text": "▣ CAMERA FX CUES",
+          "href": "https://camera-fx-cues.sociobot.in/"
+        },
+        {
+          "text": "Demo",
+          "href": "https://camera-fx-cues.sociobot.in/demo"
+        },
+        {
+          "text": "How it works",
+          "href": "https://camera-fx-cues.sociobot.in/#how"
+        },
+        {
+          "text": "Privacy",
+          "href": "https://camera-fx-cues.sociobot.in/privacy"
+        },
+        {
+          "text": "Try it with sample data",
+          "href": "https://camera-fx-cues.sociobot.in/?demo=1"
+        },
+        {
+          "text": "Privacy",
+          "href": "https://camera-fx-cues.sociobot.in/privacy"
+        },
+        {
+          "text": "Terms",
+          "href": "https://camera-fx-cues.sociobot.in/terms"
+        }
+      ]
+    },
+    "requests": [
+      "https://camera-fx-cues.sociobot.in/",
+      "https://camera-fx-cues.sociobot.in/assets/index-BBzNUxW-.js",
+      "https://camera-fx-cues.sociobot.in/assets/index-CgRlStkP.css",
+      "https://camera-fx-cues.sociobot.in/assets/demoscene-hero.webp"
+    ],
+    "consoleErrors": []
+  },
+  "desktop": {
+    "status": 200,
+    "url": "https://camera-fx-cues.sociobot.in/",
+    "visible": [
+      {
+        "tag": "SPAN",
+        "text": "▣",
+        "top": 32
+      },
+      {
+        "tag": "A",
+        "text": "Demo",
+        "top": 20
+      },
+      {
+        "tag": "A",
+        "text": "How it works",
+        "top": 20
+      },
+      {
+        "tag": "A",
+        "text": "Privacy",
+        "top": 20
+      },
+      {
+        "tag": "P",
+        "text": "LOCAL CAMERA EFFECTS // NO ACCOUNT",
+        "top": 157
+      },
+      {
+        "tag": "H1",
+        "text": "Trigger camera effects with keys",
+        "top": 189
+      },
+      {
+        "tag": "P",
+        "text": "For game-jam and classroom teams who need playful camera cues without sending video away.",
+        "top": 568
+      },
+      {
+        "tag": "A",
+        "text": "Try it with sample data",
+        "top": 672
+      },
+      {
+        "tag": "SPAN",
+        "text": "Opens the sample signal. Your real presets stay untouched.",
+        "top": 663
+      },
+      {
+        "tag": "SPAN",
+        "text": "01",
+        "top": 762
+      },
+      {
+        "tag": "SPAN",
+        "text": "02",
+        "top": 792
+      },
+      {
+        "tag": "SPAN",
+        "text": "03",
+        "top": 821
+      },
+      {
+        "tag": "FIGCAPTION",
+        "text": "ORIGINAL CAMERA ART // MADE FOR THIS TOOL",
+        "top": 634
+      }
+    ],
+    "meta": {
+      "title": "Camera FX Cues — Trigger camera effects with keys",
+      "h1": [
+        "Trigger camera effects with keys"
+      ],
+      "description": "Trigger six camera effects with number keys. Built for game jams and classrooms.",
+      "canonical": "https://camera-fx-cues.sociobot.in/",
+      "ogTitle": "Camera FX Cues — Trigger camera effects with keys",
+      "hrefs": [
+        {
+          "text": "Skip to controls",
+          "href": "https://camera-fx-cues.sociobot.in/#main"
+        },
+        {
+          "text": "▣ CAMERA FX CUES",
+          "href": "https://camera-fx-cues.sociobot.in/"
+        },
+        {
+          "text": "Demo",
+          "href": "https://camera-fx-cues.sociobot.in/demo"
+        },
+        {
+          "text": "How it works",
+          "href": "https://camera-fx-cues.sociobot.in/#how"
+        },
+        {
+          "text": "Privacy",
+          "href": "https://camera-fx-cues.sociobot.in/privacy"
+        },
+        {
+          "text": "Try it with sample data",
+          "href": "https://camera-fx-cues.sociobot.in/?demo=1"
+        },
+        {
+          "text": "Privacy",
+          "href": "https://camera-fx-cues.sociobot.in/privacy"
+        },
+        {
+          "text": "Terms",
+          "href": "https://camera-fx-cues.sociobot.in/terms"
+        }
+      ]
+    },
+    "requests": [
+      "https://camera-fx-cues.sociobot.in/",
+      "https://camera-fx-cues.sociobot.in/assets/index-BBzNUxW-.js",
+      "https://camera-fx-cues.sociobot.in/assets/index-CgRlStkP.css",
+      "https://camera-fx-cues.sociobot.in/assets/demoscene-hero.webp"
+    ],
+    "consoleErrors": []
+  }
+}
