@@ -1,39 +1,34 @@
-# Camera FX Cues — adversarial review 5 handoff
+# Camera FX Cues — polish round 5 handoff
 
 ## Result
 
-**FAIL** at commit `fc4b956ccc0da82d1916bfe45572de18e1a72090` and the live site. Review 5 found one blocking defect: the shared header visibly renders **How it works** on `/demo`, `/camera`, `/privacy`, and `/terms`, where `#how` does not exist. Clicking it only appends the fragment and does not navigate, scroll, or focus a destination.
+**PASS.** Repair commit `f3b5a2f9889e411612d1b5117606f168aa42df3b` closes F-5-1: the shared header now renders **How it works** only on the landing route, where `#how` exists. It no longer creates dead fragment links on Demo, Camera, Privacy, Terms, or the app not-found route. A global `[hidden]` safeguard also prevents future presentation rules from reviving hidden elements.
 
-The full finding, copy audit, claim evidence, route checks, and earlier-finding matrix are in `.factory/review-5.md`. Product code was not changed.
+The repair was pushed to `origin/main` and deployed to production with:
 
-## Verification performed
-
-From clean clone `/tmp/tmp.oPNpCLOlcr/clone`:
-
-```text
-npm ci                                                    PASS; 0 vulnerabilities
-all 10 commands in .factory/claims.json, separately       PASS
-npm test                                                  PASS; 23/23
-npm run lint                                              PASS
-npm run build                                             PASS; dist/ produced
+```sh
+swa deploy dist --app-name sf-camera-fx-cues --resource-group sociobot --env production --no-use-keychain
 ```
 
-Against `https://camera-fx-cues.sociobot.in`:
+Production hashes confirm the deployed shell and JavaScript are the build from the repair: `index.html` SHA-256 `fec0aeed328a510d73306f5083f6e478941e69d9396cd89b092b21b3c2ff2928`; `assets/index-BBzNUxW-.js` SHA-256 `a75cb26a08df9929809188d36b2e3cf4db5510e527749628a4c6b706876d26d9`.
 
-```text
-PLAYWRIGHT_BASE_URL=https://camera-fx-cues.sociobot.in npm test  PASS; 23/23
-factory verify-url check                                  PASS
-cold 390 × 844 and 1440 × 900 first-read checks           PASS
-one-click demo, Reset, Start for real, storage isolation  PASS
-same-origin request/privacy logging                       PASS
-route metadata, 404, non-fragment URL crawl               PASS
-visible same-page fragment crawl                          FAIL; F-5-1
-```
+## Verification
 
-The Playwright Axe integration reports zero serious or critical violations. The standalone Axe CLI could not launch because its downloaded ChromeDriver 152 did not match preinstalled Chromium 145; the repository's equivalent Playwright integration ran locally and live.
+From clean clone `/tmp/camera-fx-cues-polish5-Zsti11/clone` at `f3b5a2f9889e411612d1b5117606f168aa42df3b`:
 
-The production build is 169,669 bytes. JavaScript is 20.05 kB raw / 7.47 kB gzip; CSS is 13.14 kB raw / 3.70 kB gzip. Local and live shell, hashed JavaScript/CSS, service worker, and 404 hashes match.
+- `npm ci` passed with 0 vulnerabilities.
+- Each of the ten commands in `.factory/claims.json` passed separately: `sample-cues`, `local-video`, `preset-save`, `keyboard-cues`, `keyboard-operation`, `reduced-motion`, `no-account`, `offline-reload`, `demo-isolation`, and `privacy-scope`.
+- `npm test` passed 24/24; `npm run lint` and `npm run build` passed.
 
-## Required next step
+The final local build writes `dist/`: JavaScript 20,046 bytes raw / 7.46 kB gzip; CSS 13,171 bytes raw / 3.71 kB gzip; complete `dist/` 169,717 bytes.
 
-Conditionally omit the **How it works** anchor outside the landing route, or enforce `[hidden] { display: none !important; }`. Add a Playwright test that asserts every visible fragment link resolves to an element on its current page. Then repeat the full zero-finding review; do not mark the product complete from the existing 23-test suite alone because that suite excludes fragment links.
+Cold production verification at [camera-fx-cues.sociobot.in](https://camera-fx-cues.sociobot.in):
+
+- `PLAYWRIGHT_BASE_URL=https://camera-fx-cues.sociobot.in npm test` passed 24/24, including the new visible-fragment crawl, claim flows, demo isolation, offline reload, routing, focus, mobile layout, privacy instrumentation, and Axe serious/critical checks.
+- `/opt/fleet/lib/verify-url.sh https://camera-fx-cues.sociobot.in evidence/polish-5/verify-live` passed: HTTP 200, 571 ms cold load, no console errors, title, `lang=en`, one H1, main landmark, image alternatives, and button names all present.
+- Lighthouse 12.6.0 mobile report: Performance 100, Accessibility 100, Best Practices 100, SEO 100; FCP 0.8 s, LCP 1.1 s, CLS 0, TBT 10 ms. Raw report: `evidence/polish-5/lighthouse-live.json`.
+- Cold live screenshots: `evidence/polish-5/live-landing-mobile.png`, `evidence/polish-5/live-demo-mobile.png`, `evidence/polish-5/live-404-mobile.png`, and `evidence/polish-5/live-404-desktop.png`.
+
+## Known gaps and next steps
+
+None. No claim, review finding, or minor item is deferred. The only local credential file created by the Static Web Apps CLI was moved outside the repository and was never committed.
