@@ -1,63 +1,39 @@
-# Camera FX Cues — polish round 4 handoff
-
-## Independent verification 3 — PASS (2026-08-29)
-
-**Release result: PASS** for candidate `b589a151bbd59333e1b6efa6119aabfe452d5927` at https://camera-fx-cues.sociobot.in. A fresh independent verification ran every required claim command separately, the full local and live 23-test Playwright suites, type checking, the exact production build, live functional/privacy/accessibility/PWA checks, artifact hash comparison, headers/caching checks, and mobile Lighthouse. No product code was changed; no defects remain at any severity.
-
-Details, exact commands, and evidence are in `.factory/verification-3.md`.
+# Camera FX Cues — adversarial review 5 handoff
 
 ## Result
 
-Perfection-loop round 4 is complete with no open finding. Functional repair commit `efdcc291e4379266368678d6171e0a536099ef2f` replaces the misleading 404 metaphor in both standalone and SPA paths, adds exact regressions, refreshes claim locations, audits the copy, and updates the 88-character verb-first catalog description.
+**FAIL** at commit `fc4b956ccc0da82d1916bfe45572de18e1a72090` and the live site. Review 5 found one blocking defect: the shared header visibly renders **How it works** on `/demo`, `/camera`, `/privacy`, and `/terms`, where `#how` does not exist. Clicking it only appends the fragment and does not navigate, scroll, or focus a destination.
 
-The product remains a Vite + vanilla TypeScript static web app with its pixel/demoscene control-room identity intact. No AI feature or remote service was added because the local real-time camera-cue job does not need one.
+The full finding, copy audit, claim evidence, route checks, and earlier-finding matrix are in `.factory/review-5.md`. Product code was not changed.
 
-## Deployment
+## Verification performed
 
-- Live URL: [https://camera-fx-cues.sociobot.in](https://camera-fx-cues.sociobot.in)
-- Azure Static Web Apps deployment: `7be00d0c-8587-4953-9894-19f3cfec155b`
-- Deployed output: `dist/`, 169,669 bytes
-- Live artifact hashes match the local build for the shell, 404, service worker, sitemap, JavaScript, and CSS.
-- `/404.html` and `/definitely-missing-polish-4` return HTTP 404 with `Page not found — Camera FX Cues` and `404 // PAGE NOT FOUND`.
-
-## Verification
-
-Clean clone: `/tmp/camera-fx-cues-polish4-0vKoSY/clone` at `efdcc291e4379266368678d6171e0a536099ef2f`.
+From clean clone `/tmp/tmp.oPNpCLOlcr/clone`:
 
 ```text
 npm ci                                                    PASS; 0 vulnerabilities
-all 10 claims.json commands, separately                   PASS
+all 10 commands in .factory/claims.json, separately       PASS
 npm test                                                  PASS; 23/23
 npm run lint                                              PASS
 npm run build                                             PASS; dist/ produced
-npm ci && npm test && npm run build                       PASS; exact deploy build command
+```
+
+Against `https://camera-fx-cues.sociobot.in`:
+
+```text
 PLAYWRIGHT_BASE_URL=https://camera-fx-cues.sociobot.in npm test  PASS; 23/23
+factory verify-url check                                  PASS
+cold 390 × 844 and 1440 × 900 first-read checks           PASS
+one-click demo, Reset, Start for real, storage isolation  PASS
+same-origin request/privacy logging                       PASS
+route metadata, 404, non-fragment URL crawl               PASS
+visible same-page fragment crawl                          FAIL; F-5-1
 ```
 
-The ten independently passed claims are `sample-cues`, `local-video`, `preset-save`, `keyboard-cues`, `keyboard-operation`, `reduced-motion`, `no-account`, `offline-reload`, `demo-isolation`, and `privacy-scope`.
+The Playwright Axe integration reports zero serious or critical violations. The standalone Axe CLI could not launch because its downloaded ChromeDriver 152 did not match preinstalled Chromium 145; the repository's equivalent Playwright integration ran locally and live.
 
-Additional evidence:
+The production build is 169,669 bytes. JavaScript is 20.05 kB raw / 7.47 kB gzip; CSS is 13.14 kB raw / 3.70 kB gzip. Local and live shell, hashed JavaScript/CSS, service worker, and 404 hashes match.
 
-- Factory URL verifier: local and live pass with no 200-route console errors, one H1, `lang=en`, one main landmark, complete image alternatives, and labeled buttons.
-- Live Axe: zero violations on all seven tested routes, including camera, demo, legal, and 404 pages.
-- Live Lighthouse mobile: Performance 100, Accessibility 100, Best Practices 100, SEO 100; FCP 0.8s, LCP 1.1s, CLS 0, TBT 10ms.
-- Production first screen at 390×844: the last required fact ends at 690.20px.
-- Production demo at 390×844: active sample stage ends at 643.94px and active Outline pad at 732.94px.
-- Production request logs for cold landing, demo, and 404 checks contain no cross-origin request or unexpected console error.
-- Every discovered non-anchor internal link returns 200; application routes return 200; intentional missing routes return 404.
+## Required next step
 
-Evidence and the finding-by-finding matrix are in [polish-4.md](polish-4.md) and `evidence/polish-4/`.
-
-## Run and verify
-
-```sh
-npm ci
-npm test
-npm run lint
-npm run build
-PLAYWRIGHT_BASE_URL=https://camera-fx-cues.sociobot.in npm test
-```
-
-## Known gaps and next steps
-
-None. Every blocking and minor finding from all four reviews and both earlier polish reports was rechecked; no item remains unresolved.
+Conditionally omit the **How it works** anchor outside the landing route, or enforce `[hidden] { display: none !important; }`. Add a Playwright test that asserts every visible fragment link resolves to an element on its current page. Then repeat the full zero-finding review; do not mark the product complete from the existing 23-test suite alone because that suite excludes fragment links.
