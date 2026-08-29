@@ -1,24 +1,24 @@
-# Camera FX Cues — review 3 handoff
+# Camera FX Cues — review 4 handoff
 
 ## Result
 
-Independent adversarial review 3 is complete with a **PASS**. No product code was changed. The detailed report is `.factory/review-3.md`; it rechecks the full first-read, demo, claims, privacy, offline, history, route, metadata, accessibility, crawl, and missed-leverage checklist.
+Independent adversarial review 4 is complete with a **FAIL** on one minor finding. Product code was not changed. `.factory/review-4.md` records the exact 404 copy repair: replace the metaphor “Signal lost” with “Page not found” in the document/social title and eyebrow.
 
 ## Verification
 
-Clean clone: `/tmp/camera-fx-cues-review3-en25Fg` at `01dd162d43ee0363de0548c174f6526595b9c076`.
+Clean clone: `/tmp/camera-fx-cues-review4-w5LbxZ/clone` at `74f6e11cc9024891de9bbb2ef1c1cda673cbbaf3`.
 
 ```text
-npm ci                                                   PASS (0 vulnerabilities)
-all 10 claims.json commands, separately                  PASS
+npm ci                                                    PASS (0 vulnerabilities)
+all 10 claims.json commands, separately                   PASS
 npm test                                                  PASS (22/22)
 npm run lint                                              PASS
 npm run build                                             PASS; dist/ produced
 PLAYWRIGHT_BASE_URL=https://camera-fx-cues.sociobot.in npm test  PASS (22/22)
 ```
 
-Cold 390 × 844 and desktop live checks had no console errors and only same-origin requests. The phone demo immediately showed the active game-jam desk sample, persistent isolation banner, Reset demo, and Start for real. Local/live hashes matched for the app shell, 404 files, sitemap, and hashed JS/CSS.
+Fresh mobile/desktop first reads, one-click demo checks, demo storage isolation, same-origin request logging, offline reload, route metadata/crawl, Back/Forward behavior, and prior-finding checks otherwise passed. The live artifact hashes match the clean build. Evidence screenshots are in `evidence/review-4/`.
 
-## Known gaps and next steps
+## Known gap and next step
 
-None found. Preserve the existing claim, mobile fold, offline, isolation, history, accessibility, and crawl checks in future changes.
+Resolve F-4-1 in the standalone and SPA missing-page titles/labels, add a plain-language 404 regression, deploy, and rerun review. No other gap was found.
