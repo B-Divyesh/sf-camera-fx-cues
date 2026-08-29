@@ -1,0 +1,22 @@
+[
+  {
+    "path": "/",
+    "status": 200
+  },
+  {
+    "path": "/?demo=1",
+    "status": 200
+  },
+  {
+    "path": "/demo",
+    "status": 200
+  },
+  {
+    "path": "/privacy",
+    "status": 200
+  },
+  {
+    "path": "/terms",
+    "status": 200
+  }
+]

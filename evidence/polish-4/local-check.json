@@ -1,0 +1,38 @@
+[
+  {
+    "name": "landing-mobile",
+    "title": "Camera FX Cues — Trigger camera effects with keys",
+    "h1": "Trigger camera effects with keys",
+    "eyebrow": "LOCAL CAMERA EFFECTS // NO ACCOUNT",
+    "stageBottom": null,
+    "outlineBottom": null,
+    "errors": []
+  },
+  {
+    "name": "demo-mobile",
+    "title": "Demo — Camera FX Cues",
+    "h1": "Try all six camera cues",
+    "eyebrow": "GAME-JAM DESK // SAMPLE SIGNAL",
+    "stageBottom": 643.9375,
+    "outlineBottom": 732.9375,
+    "errors": []
+  },
+  {
+    "name": "404-mobile",
+    "title": "Page not found — Camera FX Cues",
+    "h1": "This cue page is not here",
+    "eyebrow": "404 // PAGE NOT FOUND",
+    "stageBottom": null,
+    "outlineBottom": null,
+    "errors": []
+  },
+  {
+    "name": "404-desktop",
+    "title": "Page not found — Camera FX Cues",
+    "h1": "This cue page is not here",
+    "eyebrow": "404 // PAGE NOT FOUND",
+    "stageBottom": null,
+    "outlineBottom": null,
+    "errors": []
+  }
+]

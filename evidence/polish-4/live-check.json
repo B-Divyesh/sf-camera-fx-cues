@@ -1,0 +1,67 @@
+[
+  {
+    "name": "live-landing-mobile",
+    "path": "/",
+    "status": 200,
+    "title": "Camera FX Cues — Trigger camera effects with keys",
+    "h1": "Trigger camera effects with keys",
+    "eyebrow": "LOCAL CAMERA EFFECTS // NO ACCOUNT",
+    "stageBottom": null,
+    "outlineBottom": null,
+    "facts": [
+      {
+        "text": "01 Camera stays in this browser",
+        "bottom": 651.828125
+      },
+      {
+        "text": "02 Works offline after your first visit",
+        "bottom": 671.015625
+      },
+      {
+        "text": "03 Free; no account needed",
+        "bottom": 690.203125
+      }
+    ],
+    "errors": [],
+    "remote": []
+  },
+  {
+    "name": "live-demo-mobile",
+    "path": "/?demo=1",
+    "status": 200,
+    "title": "Demo — Camera FX Cues",
+    "h1": "Try all six camera cues",
+    "eyebrow": "GAME-JAM DESK // SAMPLE SIGNAL",
+    "stageBottom": 643.9375,
+    "outlineBottom": 732.9375,
+    "facts": [],
+    "errors": [],
+    "remote": []
+  },
+  {
+    "name": "live-404-mobile",
+    "path": "/404.html",
+    "status": 404,
+    "title": "Page not found — Camera FX Cues",
+    "h1": "This cue page is not here",
+    "eyebrow": "404 // PAGE NOT FOUND",
+    "stageBottom": null,
+    "outlineBottom": null,
+    "facts": [],
+    "errors": [],
+    "remote": []
+  },
+  {
+    "name": "live-404-desktop",
+    "path": "/definitely-missing-polish-4",
+    "status": 404,
+    "title": "Page not found — Camera FX Cues",
+    "h1": "This cue page is not here",
+    "eyebrow": "404 // PAGE NOT FOUND",
+    "stageBottom": null,
+    "outlineBottom": null,
+    "facts": [],
+    "errors": [],
+    "remote": []
+  }
+]

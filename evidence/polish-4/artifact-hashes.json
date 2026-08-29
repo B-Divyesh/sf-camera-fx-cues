@@ -1,0 +1,51 @@
+[
+  {
+    "file": "index.html",
+    "status": 200,
+    "local": "b8fc7c5f761b1fa6fc9e7ceacc47809062b02d4563152fcc98cd58837a3e4c82",
+    "live": "b8fc7c5f761b1fa6fc9e7ceacc47809062b02d4563152fcc98cd58837a3e4c82",
+    "match": true
+  },
+  {
+    "file": "404.html",
+    "status": 404,
+    "local": "c72d4f8c289c392bfa5cd714cf5b0c0025b3a47447c10da6c6b0b25d1510c160",
+    "live": "c72d4f8c289c392bfa5cd714cf5b0c0025b3a47447c10da6c6b0b25d1510c160",
+    "match": true
+  },
+  {
+    "file": "404.css",
+    "status": 200,
+    "local": "e65be5a441e1d96e5a98d807f7025f4a5dde9d1b462b073b14f1237dc4c15b2d",
+    "live": "e65be5a441e1d96e5a98d807f7025f4a5dde9d1b462b073b14f1237dc4c15b2d",
+    "match": true
+  },
+  {
+    "file": "sw.js",
+    "status": 200,
+    "local": "f6ecfbe50166771fdb8de1e0e5a0c63b404eb0364eb32cb3bf11b782755932b4",
+    "live": "f6ecfbe50166771fdb8de1e0e5a0c63b404eb0364eb32cb3bf11b782755932b4",
+    "match": true
+  },
+  {
+    "file": "sitemap.xml",
+    "status": 200,
+    "local": "4ebe95759344c71cb82c440172ff3c58ed2fb65eba2323a00220a15a1bc27a8f",
+    "live": "4ebe95759344c71cb82c440172ff3c58ed2fb65eba2323a00220a15a1bc27a8f",
+    "match": true
+  },
+  {
+    "file": "assets/index-BCcp3ow8.js",
+    "status": 200,
+    "local": "d6b7d1ced1417371c95f351764058695283e25280458eafa388c5a2f35d37df2",
+    "live": "d6b7d1ced1417371c95f351764058695283e25280458eafa388c5a2f35d37df2",
+    "match": true
+  },
+  {
+    "file": "assets/index-DR7mkUsy.css",
+    "status": 200,
+    "local": "1393266742de4a8c7e73d7ff1cc8d1785334b8eab0bdfcee1db484df05a41f5c",
+    "live": "1393266742de4a8c7e73d7ff1cc8d1785334b8eab0bdfcee1db484df05a41f5c",
+    "match": true
+  }
+]

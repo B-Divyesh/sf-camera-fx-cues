@@ -1,0 +1,44 @@
+[
+  {
+    "path": "/",
+    "title": "Camera FX Cues — Trigger camera effects with keys",
+    "violations": [],
+    "seriousOrCritical": 0
+  },
+  {
+    "path": "/?demo=1",
+    "title": "Demo — Camera FX Cues",
+    "violations": [],
+    "seriousOrCritical": 0
+  },
+  {
+    "path": "/demo",
+    "title": "Demo — Camera FX Cues",
+    "violations": [],
+    "seriousOrCritical": 0
+  },
+  {
+    "path": "/camera",
+    "title": "Camera input — Camera FX Cues",
+    "violations": [],
+    "seriousOrCritical": 0
+  },
+  {
+    "path": "/privacy",
+    "title": "Privacy — Camera FX Cues",
+    "violations": [],
+    "seriousOrCritical": 0
+  },
+  {
+    "path": "/terms",
+    "title": "Terms — Camera FX Cues",
+    "violations": [],
+    "seriousOrCritical": 0
+  },
+  {
+    "path": "/404.html",
+    "title": "Page not found — Camera FX Cues",
+    "violations": [],
+    "seriousOrCritical": 0
+  }
+]
