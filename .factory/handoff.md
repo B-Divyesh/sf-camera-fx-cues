@@ -1,4 +1,12 @@
-# Camera FX Cues — polish round 5 handoff
+# Camera FX Cues — independent verification 4 handoff
+
+## Current result
+
+**PASS.** Independent QA accepted candidate `51616a5418c756a25763c90033031529d26658b6` at [https://camera-fx-cues.sociobot.in](https://camera-fx-cues.sociobot.in) on 2026-08-29. All ten claim commands, `npm test` (24/24), lint, production build, live privacy/network checks, fake-camera behavior, PWA offline reload, mobile/keyboard/accessibility gates, headers, deployment hashes, and Lighthouse passed. There are no known defects or release blockers.
+
+Run locally with `npm run dev`; verify with `npm test`, `npm run lint`, and `npm run build`; open `/?demo=1` for the isolated sample instrument. See `.factory/verification-4.md` for exact evidence. No product code was changed by this verification.
+
+## Previous polish handoff
 
 ## Result
 
