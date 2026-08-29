@@ -1,5 +1,11 @@
 # Camera FX Cues — polish round 4 handoff
 
+## Independent verification 3 — PASS (2026-08-29)
+
+**Release result: PASS** for candidate `b589a151bbd59333e1b6efa6119aabfe452d5927` at https://camera-fx-cues.sociobot.in. A fresh independent verification ran every required claim command separately, the full local and live 23-test Playwright suites, type checking, the exact production build, live functional/privacy/accessibility/PWA checks, artifact hash comparison, headers/caching checks, and mobile Lighthouse. No product code was changed; no defects remain at any severity.
+
+Details, exact commands, and evidence are in `.factory/verification-3.md`.
+
 ## Result
 
 Perfection-loop round 4 is complete with no open finding. Functional repair commit `efdcc291e4379266368678d6171e0a536099ef2f` replaces the misleading 404 metaphor in both standalone and SPA paths, adds exact regressions, refreshes claim locations, audits the copy, and updates the 88-character verb-first catalog description.
