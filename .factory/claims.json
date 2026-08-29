@@ -2,7 +2,7 @@
   {
     "id": "sample-cues",
     "claim": "Try all six cues with the sample signal",
-    "where": "landing and demo cue grid",
+    "where": "demo heading and cue grid; README",
     "test": "npm test -- --grep @claim:sample-cues",
     "sandbox": "fresh browser context at /?demo=1; activate every cue and assert its rendered canvas, overlay, or animation state"
   },
@@ -23,7 +23,7 @@
   {
     "id": "keyboard-cues",
     "claim": "Works with six number keys",
-    "where": "landing fact and demo controls",
+    "where": "landing how-it-works step, demo cue controls, and README",
     "test": "npm test -- --grep @claim:keyboard-cues",
     "sandbox": "fresh browser context at /?demo=1; press keys 1 through 6 and assert each rendered effect state"
   },

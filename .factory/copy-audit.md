@@ -1,6 +1,6 @@
 # Copy audit
 
-Checked 2026-08-28 after polish round 2. No sentence exceeds 22 words. No copy contains a banned marketing word. The bundled no-camera input is always the **sample signal**, except for the required CTA **Try it with sample data**.
+Checked 2026-08-29 after polish round 4. No sentence exceeds 22 words. No copy contains a banned marketing word. The bundled no-camera input is always the **sample signal**, except for the required CTA **Try it with sample data**.
 
 ## Landing page
 
@@ -68,6 +68,16 @@ Checked 2026-08-28 after polish round 2. No sentence exceeds 22 words. No copy c
 | License | 1 | pass |
 | MIT. | 1 | pass |
 | See LICENSE. | 2 | pass |
+
+## Not-found page
+
+| Copy | Words | Result |
+|---|---:|---|
+| Page not found — Camera FX Cues | 6 | pass; document and social title |
+| 404 // Page not found | 4 | pass; names the HTTP error directly |
+| This cue page is not here | 6 | pass |
+| Return to the camera control room and choose a source. | 10 | pass |
+| Open Camera FX Cues | 4 | pass |
 
 ## Terminology
 

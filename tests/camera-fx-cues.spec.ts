@@ -302,14 +302,17 @@ test('@claim:offline-reload complete shell reloads offline after one visit', asy
   await context.setOffline(false);
 });
 
-test('SWA missing routes use a true 404 and the 404 page obeys CSP', async ({ page }) => {
+test('SWA missing routes use a plain-language true 404 that obeys CSP', async ({ page }) => {
   const config = JSON.parse(await readFile('public/staticwebapp.config.json', 'utf8'));
   expect(config.navigationFallback).toBeUndefined();
   expect(config.responseOverrides['404']).toEqual({ rewrite: '/404.html', statusCode: 404 });
   expect(config.routes.every((route: { rewrite?: string; statusCode?: number }) => !(route.rewrite && route.statusCode))).toBe(true);
   expect(config.routes).toContainEqual({ route: '/404.html', statusCode: 404 });
   await page.goto('/404.html');
-  await expect(page).toHaveTitle('Signal lost — Camera FX Cues');
+  await expect(page).toHaveTitle('Page not found — Camera FX Cues');
+  await expect(page.getByText('404 // PAGE NOT FOUND', { exact: true })).toBeVisible();
+  await expect(page.locator('meta[property="og:title"]')).toHaveAttribute('content', 'Page not found — Camera FX Cues');
+  await expect(page.locator('meta[name="twitter:title"]')).toHaveAttribute('content', 'Page not found — Camera FX Cues');
   await expect(page.locator('style')).toHaveCount(0);
   await expect(page.locator('link[rel="stylesheet"]')).toHaveAttribute('href', '/404.css');
   await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /not available/);
@@ -324,6 +327,13 @@ test('SWA missing routes use a true 404 and the 404 page obeys CSP', async ({ pa
   await expect(page.getByRole('link', { name: 'Terms' })).toHaveAttribute('href', '/terms');
   await expect(page.getByText('Built by Param Factory · v1.0.0')).toBeVisible();
   await expect(page.locator('main')).toHaveCSS('background-color', 'rgb(20, 25, 54)');
+});
+
+test('client-side missing routes use the same plain 404 wording', async ({ page }) => {
+  await page.goto('/missing-test-route');
+  await expect(page).toHaveTitle('Page not found — Camera FX Cues');
+  await expect(page.getByText('404 // PAGE NOT FOUND', { exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'This cue page is not here' })).toBeVisible();
 });
 
 test('routes set titles, metadata, focus, history, and legal links', async ({ page }) => {

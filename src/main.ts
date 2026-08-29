@@ -92,7 +92,7 @@ function textPage(type: 'privacy' | 'terms') {
   return template(`<article class="legal"><p class="eyebrow">${privacy ? 'PRIVACY' : 'TERMS'}</p><h1>${privacy ? 'Your camera stays on your device' : 'Use this cue tool safely'}</h1>${privacy ? `<h2>Camera access</h2><p>Camera FX Cues asks for camera permission only after you choose it. Video is processed in the current browser tab. It is never uploaded, recorded, or stored.</p><h2>Local settings</h2><p>Saved presets use browser storage on this device. Demo presets use a separate demo storage area. You can clear them from the preset controls or your browser settings.</p><h2>No tracking</h2><p>This site has no analytics, advertising, accounts, or third-party scripts.</p>` : `<h2>Use with consent</h2><p>Get permission before showing someone on camera. Do not use the tool to identify people or collect video.</p><h2>Availability</h2><p>This tool is provided as-is. Effects can vary by browser and camera hardware.</p><h2>Your choices</h2><p>You control camera permission and local presets. You can stop the camera by leaving the page or closing the tab.</p>`}</article>`, type);
 }
 
-function missing() { return template(`<article class="legal missing"><p class="eyebrow">404 // SIGNAL LOST</p><h1>This cue page is not here</h1><p>Return to the camera control room and choose a source.</p><a href="/" data-route class="button primary">Open Camera FX Cues</a></article>`, 'missing'); }
+function missing() { return template(`<article class="legal missing"><p class="eyebrow">404 // PAGE NOT FOUND</p><h1>This cue page is not here</h1><p>Return to the camera control room and choose a source.</p><a href="/" data-route class="button primary">Open Camera FX Cues</a></article>`, 'missing'); }
 
 function render(next = routeForPath()) {
   stopCamera();
@@ -100,7 +100,7 @@ function render(next = routeForPath()) {
   activeCue = null; freezeFrame = null; pixelUntil = 0;
   mode = next;
   app.innerHTML = next === 'landing' ? landing() : next === 'demo' ? instrument('demo') : next === 'live' ? instrument('live') : next === 'privacy' || next === 'terms' ? textPage(next) : missing();
-  const titles: Record<Mode, string> = { landing: 'Camera FX Cues — Trigger camera effects with keys', demo: 'Demo — Camera FX Cues', live: 'Camera input — Camera FX Cues', privacy: 'Privacy — Camera FX Cues', terms: 'Terms — Camera FX Cues', missing: 'Signal lost — Camera FX Cues' };
+  const titles: Record<Mode, string> = { landing: 'Camera FX Cues — Trigger camera effects with keys', demo: 'Demo — Camera FX Cues', live: 'Camera input — Camera FX Cues', privacy: 'Privacy — Camera FX Cues', terms: 'Terms — Camera FX Cues', missing: 'Page not found — Camera FX Cues' };
   document.title = titles[next];
   const descriptions: Record<Mode, string> = { landing: 'Trigger six camera effects with number keys. Built for game jams and classrooms.', demo: 'Try six camera cues on a game-jam desk sample signal.', live: 'Use local camera input with six keyboard-triggered effects.', privacy: 'Camera FX Cues processes video in the current browser tab.', terms: 'Terms for using Camera FX Cues safely.', missing: 'This Camera FX Cues page is not available.' };
   document.querySelector<HTMLMetaElement>('meta[name="description"]')?.setAttribute('content', descriptions[next]);
